@@ -1,0 +1,10 @@
+[
+    {
+        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/menu/stub.xml",
+        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/FindYourPartner/react-native-navigation/unspecified/res/menu/stub.xml"
+    },
+    {
+        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/menu/search_item.xml",
+        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/FindYourPartner/react-native-navigation/unspecified/res/menu/search_item.xml"
+    }
+]
