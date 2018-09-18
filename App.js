@@ -8,40 +8,41 @@ import SideDrawer from "./src/screens/SideDrawer/SideDrawer";
 import configureStore from "./src/store/configureStore";
 
 const store = configureStore();
+
 // Register Screens
 Navigation.registerComponent(
-  "awesome-places.AuthScreen",
-  () => AuthScreen,
-  store,
-  Provider
+    "awesome-places.AuthScreen",
+    () => AuthScreen,
+    store,
+    Provider
 );
 Navigation.registerComponent(
-  "awesome-places.UserProfile",
-  () => UserProfile,
-  store,
-  Provider
+	"awesome-places.UserProfile",
+	() => UserProfile,
+	store,
+	Provider
 );
 Navigation.registerComponent("awesome-places.AllUsers", 
-  () => AllUsers,
-  store,
-  Provider
+	() => AllUsers,
+	store,
+	Provider
 );
 
 Navigation.registerComponent(
-  "awesome-places.PlaceDetailScreen",
-  () => PlaceDetailScreen,
-  store,
-  Provider
+	"awesome-places.PlaceDetailScreen",
+	() => PlaceDetailScreen,
+	store,
+	Provider
 );
 Navigation.registerComponent(
-  "awesome-places.SideDrawer",
-  () => SideDrawer
+	"awesome-places.SideDrawer",
+	() => SideDrawer
 );
 
 // Start a App
 Navigation.startSingleScreenApp({
-  screen: {
-    screen: "awesome-places.AuthScreen",
-    title: "Login"
-  }
+	screen: {
+		screen: "awesome-places.AuthScreen",
+		title: "Login"
+	}
 });
