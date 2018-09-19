@@ -1,18 +1,19 @@
 import { Navigation } from 'react-native-navigation';
+import { Platform } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 
 const startTabs = () => {
     Promise.all([
-        Icon.getImageSource("ios-people", 30),
-        Icon.getImageSource("ios-contact", 30),
-        Icon.getImageSource("ios-menu", 30)
+        Icon.getImageSource(Platform.OS === 'android' ? "md-map" : "ios-map", 30),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-share-alt" : "ios-share", 30),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-menu" : "ios-menu", 30)
     ]).then(sources => {
         Navigation.startTabBasedApp({
             tabs: [
                 {
-                    screen: "awesome-places.AllUsers",
-                    label: "All Users",
-                    title: "All Users",
+                    screen: "awesome-places.FindPlaceScreen",
+                    label: "Find Place",
+                    title: "Find Place",
                     icon: sources[0],
                     navigatorButtons: {
                         leftButtons: [
@@ -25,9 +26,9 @@ const startTabs = () => {
                     }
                 },
                 {
-                    screen: "awesome-places.UserProfile",
-                    label: "User Profile",
-                    title: "User Profile",
+                    screen: "awesome-places.SharePlaceScreen",
+                    label: "Share Place",
+                    title: "Share Place",
                     icon: sources[1],
                     navigatorButtons: {
                         leftButtons: [
@@ -40,11 +41,17 @@ const startTabs = () => {
                     }
                 }
             ],
+            tabsStyle: {
+                tabBarSelectedButtonColor: "orange"
+            },
             drawer: {
                 left: {
                     screen: "awesome-places.SideDrawer"
                 }
-            }
+            },
+            appStyle: {
+                tabBarSelectedButtonColor: "orange"
+            },
         });
     });
 };
