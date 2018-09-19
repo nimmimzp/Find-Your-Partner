@@ -52,12 +52,12 @@
         "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.aurelhubert/ahbottomnavigation/2.0.6/res/drawable/item_background.xml"
     },
     {
-        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_light.xml",
-        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_dialog_material_background_light.xml"
-    },
-    {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/drawable/abc_switch_thumb_material.xml",
         "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/drawable/abc_switch_thumb_material.xml"
+    },
+    {
+        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/drawable/abc_dialog_material_background_light.xml",
+        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/23.0.1/res/drawable/abc_dialog_material_background_light.xml"
     },
     {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/drawable/design_password_eye.xml",

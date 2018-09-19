@@ -44,12 +44,12 @@
         "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout/select_dialog_multichoice_material.xml"
     },
     {
-        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/redbox_view.xml",
-        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.4/res/layout/redbox_view.xml"
-    },
-    {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/select_dialog_singlechoice_material.xml",
         "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout/select_dialog_singlechoice_material.xml"
+    },
+    {
+        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/redbox_view.xml",
+        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.facebook.react/react-native/0.55.4/res/layout/redbox_view.xml"
     },
     {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/abc_expanded_menu_layout.xml",
@@ -226,6 +226,10 @@
     {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/notification_template_icon_group.xml",
         "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/com.android.support/appcompat-v7/25.3.1/res/layout/notification_template_icon_group.xml"
+    },
+    {
+        "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/list_item.xml",
+        "source": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/exploded-aar/FindYourPartner/react-native-image-picker/unspecified/res/layout/list_item.xml"
     },
     {
         "merged": "/home/deligence/Desktop/Find-Your-Partner/Find-Your-Partner/android/app/build/intermediates/res/merged/debug/layout/design_layout_tab_text.xml",
