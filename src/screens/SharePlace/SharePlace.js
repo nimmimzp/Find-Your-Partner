@@ -9,13 +9,13 @@ import {
   Image
 } from "react-native";
 import { connect } from "react-redux";
-
+import LastName from '../../components/PlaceInput/LastName';
 import { addPlace } from "../../store/actions/index";
 import PlaceInput from "../../components/PlaceInput/PlaceInput";
 import MainText from "../../components/UI/MainText/MainText";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
 import PickImage from "../../components/PickImage/PickImage";
-import PickLocation from "../../components/PickLocation/PickLocation";
+//import PickLocation from "../../components/PickLocation/PickLocation";
 import validate from "../../utility/validation";
 
 class SharePlaceScreen extends Component {
@@ -25,7 +25,7 @@ class SharePlaceScreen extends Component {
 
   state = {
     controls: {
-      placeName: {
+      firstName: {
         value: "",
         valid: false,
         touched: false,
@@ -36,6 +36,14 @@ class SharePlaceScreen extends Component {
       image:{
         value:null,
         valid: false
+      },
+      lastName:{
+        value: "",
+        valid: false,
+        touched: false,
+        validationRules: {
+          notEmpty: true
+        }
       }
     }
   };
@@ -55,27 +63,28 @@ class SharePlaceScreen extends Component {
     }
   };
 
-  placeNameChangedHandler = val => {
+  updateInputState = (key,val) =>{
     this.setState(prevState => {
       return {
-        controls: {
+        controls:{
           ...prevState.controls,
-          placeName: {
-            ...prevState.controls.placeName,
+          [key]:{
+            ...prevState.controls[key],
             value: val,
-            valid: validate(val, prevState.controls.placeName.validationRules),
+            valid: validate(val, prevState.controls[key].validationRules),
             touched: true
           }
         }
-      };
+      }
     });
-  };
+  }
 
   placeAddedHandler = () => {
-    if (this.state.controls.placeName.value.trim() !== "") {
+    if (this.state.controls.firstName.value.trim() !== "") {
       this.props.onAddPlace(
-        this.state.controls.placeName.value,
-        this.state.controls.image.value
+        this.state.controls.firstName.value,
+        this.state.controls.image.value,
+        this.state.controls.lastName.value,
       );
      
     }
@@ -101,20 +110,22 @@ class SharePlaceScreen extends Component {
       <ScrollView>
         <View style={styles.container}>
           <MainText>
-            <HeadingText>Share a Place with us!</HeadingText>
+            <HeadingText>Your Profile</HeadingText>
           </MainText>
           <PickImage onImagePicked={this.imagePickHandler}/>
-          <PickLocation />
+         
           <PlaceInput
-            placeData={this.state.controls.placeName}
-            onChangeText={this.placeNameChangedHandler}
+            placeData={this.state.controls.firstName}
+            onChangeText={val => this.updateInputState("firstName", val)}
           />
+          <LastName placeData={this.state.controls.lastName} onChangeText={val => this.updateInputState("lastName", val)}/>
           <View style={styles.button}>
             <Button
-              title="Share the Place!"
+              title="Save Your Info"
               onPress={this.placeAddedHandler}
               disabled={
-                !this.state.controls.placeName.valid ||
+                !this.state.controls.firstName.valid ||
+                !this.state.controls.lastName.valid ||
                 !this.state.controls.image.valid
               }
             />
@@ -148,7 +159,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onAddPlace: (placeName,image) => dispatch(addPlace(placeName,image))
+    onAddPlace: (firstName,image,lastName) => dispatch(addPlace(firstName,image,lastName))
   };
 };
 

@@ -71,6 +71,7 @@ class FindPlaceScreen extends Component {
   };
 
   render() {
+    console.log(this.props);
     let content = (
       <Animated.View
         style={{

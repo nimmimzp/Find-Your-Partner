@@ -1,10 +1,11 @@
 import { ADD_PLACE, DELETE_PLACE } from './actionTypes';
 
-export const addPlace = (placeName,image) => {
+export const addPlace = (firstName,image,lastName) => {
     return {
         type: ADD_PLACE,
-        placeName: placeName,
-        image : image
+        firstName: firstName,
+        image : image,
+        lastName: lastName
     };
 };
 

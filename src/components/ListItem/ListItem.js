@@ -3,10 +3,15 @@ import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 
 const listItem = props => (
   <TouchableOpacity onPress={props.onItemPressed}>
-    <View style={styles.listItem}>
+    <View style={ styles.listItem}>
       <Image resizeMode="cover" source={props.placeImage} style={styles.placeImage} />
-      <Text>{props.placeName}</Text>
+     
+        <Text>{props.firstName}</Text>
+      
+        <Text>{props.lastName}</Text>
+      
     </View>
+    
   </TouchableOpacity>
 );
 
@@ -23,6 +28,9 @@ const styles = StyleSheet.create({
       marginRight: 8,
       height: 30,
       width: 30
+  },
+  spaceBetweenText:{
+    marginRight:8
   }
 });
 

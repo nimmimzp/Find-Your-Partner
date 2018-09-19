@@ -1,7 +1,6 @@
 import React, { Component } from "react";
-import { View, Image, Button, StyleSheet } from "react-native";
+import {Platform, View, Image, Button, StyleSheet } from "react-native";
 import ImagePicker from 'react-native-image-picker';
-//import imagePlaceholder from "../../assets/beautiful-place.jpg";
 
 class PickImage extends Component {
   state ={
@@ -26,11 +25,11 @@ class PickImage extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.placeholder}>
-          <Image source={this.state.pickedImaged} style={styles.previewImage} />
-        </View>
+        <View style = { styles.MainContainer }>
+          <Image source={this.state.pickedImaged} style={{width: 150, height: 150, borderRadius: 150/2}} />
+        </View>       
         <View style={styles.button}>
-          <Button title="Pick Image" onPress={this.pickImageHandler} />
+          <Button title="Set Your Picture" onPress={this.pickImageHandler} />
         </View>
       </View>
     );
@@ -47,10 +46,22 @@ const styles = StyleSheet.create({
       borderColor: "black",
       backgroundColor: "#eee",
       width: "80%",
-      height: 150
+      height: 150,
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 5,
+      paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
     },
     button: {
       margin: 8
+    },
+    MainContainer:{
+      flex: 1,
+      justifyContent: 'center',
+      alignItems: 'center',
+      margin: 5,
+      paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
     },
     previewImage: {
         width: "100%",

@@ -49,16 +49,17 @@ class PlaceDetail extends Component {
             : styles.landscapeContainer
         ]}
       >
-        <View style={styles.subContainer}>
-          <Image
-            source={this.props.selectedPlace.image}
-            style={styles.placeImage}
-          />
-        </View>
+      <View style = { styles.MainContainer }>
+        <Image source={this.props.selectedPlace.image} style={{width: 150, height: 150, borderRadius: 150/2}} />
+      </View> 
+        
         <View style={styles.subContainer}>
           <View>
             <Text style={styles.placeName}>
-              {this.props.selectedPlace.name}
+              {this.props.selectedPlace.firstName}
+            </Text>
+            <Text style={styles.placeName}>
+              {this.props.selectedPlace.lastName}
             </Text>
           </View>
           <View>
@@ -79,6 +80,13 @@ class PlaceDetail extends Component {
 }
 
 const styles = StyleSheet.create({
+  MainContainer:{
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    margin: 5,
+    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+  },
   container: {
     margin: 22,
     flex: 1
