@@ -56,10 +56,13 @@ class PlaceDetail extends Component {
         <View style={styles.subContainer}>
           <View>
             <Text style={styles.placeName}>
-              {this.props.selectedPlace.firstName}
+              First Name:{this.props.selectedPlace.firstName}
             </Text>
             <Text style={styles.placeName}>
-              {this.props.selectedPlace.lastName}
+              Last Name:{this.props.selectedPlace.lastName}
+            </Text>
+            <Text style={styles.placeName}>
+              Birthday:{this.props.selectedPlace.birthday}
             </Text>
           </View>
           <View>

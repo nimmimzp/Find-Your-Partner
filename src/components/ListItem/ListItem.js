@@ -8,7 +8,7 @@ const listItem = props => (
      
         <Text>{props.firstName}</Text>
       
-        <Text>{props.lastName}</Text>
+        <Text style={{ marginLeft: 5  }}>{props.lastName}</Text>
       
     </View>
     
