@@ -70,8 +70,8 @@ class PlaceDetail extends Component {
               <View style={styles.deleteButton}>
                 <Icon
                   size={30}
-                  name={Platform.OS === "android" ? "md-trash" : "ios-trash"}
-                  color="red"
+                  name={Platform.OS === "android" ? "md-person-add" : "ios-person-add"}
+                  color="orange"
                 />
               </View>
             </TouchableOpacity>

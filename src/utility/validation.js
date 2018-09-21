@@ -15,7 +15,7 @@ const validate = (val, rules, connectedValue) => {
 				isValid = isValid && notEmptyValidator(val);
 				break;
 			case "onlyNumber":
-				isValid = isValid && onlyNumberValidator(val) && checkPhoneNumberLen(val,rules[rule]) ;
+				isValid = isValid && onlyNumberValidator(val)  ;
 				break;
 			default:
 				isValid = true;

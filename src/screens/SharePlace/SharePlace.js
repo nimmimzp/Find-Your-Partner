@@ -125,7 +125,8 @@ class SharePlaceScreen extends Component {
 				this.state.controls.firstName.value,
 				this.state.controls.image.value,
 				this.state.controls.lastName.value,
-				this.state.controls.birthday.value
+				this.state.controls.birthday.value,
+				this.state.controls.phonenumber.value
 			);
 		}
 	};
@@ -171,7 +172,8 @@ class SharePlaceScreen extends Component {
 					disabled={
 						!this.state.controls.firstName.valid ||
 						!this.state.controls.lastName.valid ||
-						!this.state.controls.image.valid
+						!this.state.controls.image.valid ||
+						!this.state.controls.phonenumber.valid
 					}
 					/>
 				</View>
@@ -204,7 +206,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onAddPlace: (firstName,image,lastName,birthday) => dispatch(addPlace(firstName,image,lastName,birthday))
+		onAddPlace: (firstName,image,lastName,birthday,phonenumber) => dispatch(addPlace(firstName,image,lastName,birthday,phonenumber))
 	};
 };
 
