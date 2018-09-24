@@ -6,7 +6,9 @@ import {
 	Button,
 	StyleSheet,
 	ScrollView,
-	Platform
+	Platform,
+	Text,
+	ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
 import LastName from '../../components/PlaceInput/LastName';
@@ -146,6 +148,20 @@ class SharePlaceScreen extends Component {
 	}
 
 	render() {
+		let submitButton = <Button
+		title="Save Your Info"
+		onPress={this.placeAddedHandler}
+		disabled={
+			!this.state.controls.firstName.valid ||
+			!this.state.controls.lastName.valid ||
+			!this.state.controls.image.valid ||
+			!this.state.controls.phonenumber.valid
+		}
+		/>
+
+		if(this.props.isLoading){
+			submitButton = <ActivityIndicator size="large" color="orange" />
+		}
 		return (
 		<ScrollView>
 			<View style={styles.container}>
@@ -165,17 +181,7 @@ class SharePlaceScreen extends Component {
 					<Icon size={30} name={Platform.OS === "android" ? "md-calendar" : "ios-calendar"} color="orange"/>
 				</TouchableOpacity>
 				<View style={styles.button}>
-					
-					<Button
-					title="Save Your Info"
-					onPress={this.placeAddedHandler}
-					disabled={
-						!this.state.controls.firstName.valid ||
-						!this.state.controls.lastName.valid ||
-						!this.state.controls.image.valid ||
-						!this.state.controls.phonenumber.valid
-					}
-					/>
+					{submitButton}
 				</View>
 			</View>
 		</ScrollView>
@@ -204,10 +210,16 @@ const styles = StyleSheet.create({
 	}
 });
 
+const mapStateToProps = state => {
+	return {
+		isLoading: state.ui.isLoading
+	}
+};
+
 const mapDispatchToProps = dispatch => {
 	return {
 		onAddPlace: (firstName,image,lastName,birthday,phonenumber) => dispatch(addPlace(firstName,image,lastName,birthday,phonenumber))
 	};
 };
 
-export default connect(null, mapDispatchToProps)(SharePlaceScreen);
+export default connect(mapStateToProps, mapDispatchToProps)(SharePlaceScreen);

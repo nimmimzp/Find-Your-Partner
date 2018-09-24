@@ -7,7 +7,7 @@ import {
   Animated
 } from "react-native";
 import { connect } from "react-redux";
-
+import { getPlaces } from "../../store/actions/index";
 import PlaceList from "../../components/PlaceList/PlaceList";
 
 class FindPlaceScreen extends Component {
@@ -70,8 +70,12 @@ class FindPlaceScreen extends Component {
     });
   };
 
+  componentDidMount() {
+    this.props.onLoadPlaces();
+  }
+
   render() {
-    console.log(this.props);
+  
     let content = (
       <Animated.View
         style={{
@@ -134,10 +138,16 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapDispatchToProps = dispatch => {
+  return{
+    onLoadPlaces: () => dispatch(getPlaces())
+  }
+}
+
 const mapStateToProps = state => {
   return {
     places: state.places.places
   };
 };
 
-export default connect(mapStateToProps)(FindPlaceScreen);
+export default connect(mapStateToProps,mapDispatchToProps)(FindPlaceScreen);

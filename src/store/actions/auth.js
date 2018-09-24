@@ -13,7 +13,7 @@ export const tryAuth = (authData) => {
         .catch(err => console.warn(err))
         .then(res=>res.json())
         .then(parsedRes => {
-            console.log(parseFloat);
+            console.log(parsedRes);
         });
     }
 };
