@@ -1,6 +1,18 @@
 import { SET_PLACES, REMOVE_PLACE } from './actionTypes';
 import { uiStartLoading,uiStopLoading, authGetToken } from './index';
+import * as firebase from 'firebase';
 
+const firebaseConfig = {
+    apiKey: "AIzaSyBhUyFsb_fRSct-Aw_plWtNxOfWCY4XPig",
+    authDomain: "react-native-1536905661123.firebaseapp.com",
+    databaseURL: "https://react-native-1536905661123.firebaseio.com",
+    projectId: "react-native-1536905661123",
+    storageBucket: "react-native-1536905661123.appspot.com",   
+}
+
+
+const firebaseApp = firebase.initializeApp(firebaseConfig);
+const userRef  = firebase.database().ref("users");
 export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
     return  dispatch => {
         let authToken;
@@ -57,6 +69,28 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
 };
 
 export const getPlaces = () => {
+   
+    userRef.on('value',(snap) =>{
+        let userData = [];
+        snap.forEach((child) => {
+            userData.push({
+                firstName: child.val().firstName,
+                lastName: child.val().lastName,
+                image:{
+                    uri:child.val().image
+                },
+                key: child.key
+            })
+        })
+        console.log(userData);
+    })
+
+    userRef.once('value') //get all content from your node ref, it will return a promise
+        .then(snapshot => { // then get the snapshot which contains an array of objects
+            console.log(snapshot.key) // use ES6 filter method to return your array containing the values that match with the condition
+        })
+
+   
     return dispatch => {
         dispatch(authGetToken())
             .then(token => {
