@@ -7,3 +7,7 @@ export const UI_START_LOADING = "UI_START_LOADING";
 export const UI_STOP_LOADING = "UI_STOP_LOADING";
 
 export const AUTH_SET_TOKEN = "AUTH_SET_TOKEN";
+
+export const AUTH_SET_USERID = "AUTH_SET_USERID";
+
+export const AUTH_LOGIN_USER = "AUTH_LOGIN_USER";

@@ -1,8 +1,9 @@
 import { Navigation } from "react-native-navigation";
 import { Provider } from "react-redux";
 import AuthScreen from "./src/screens/Auth/Auth";
-import UserProfile from './src/screens/UserProfile/UserProfile';
-import AllUsers from './src/screens/AllUsers/AllUsers';
+import FirstScreen  from "./src/screens/FirstScreen/FirstScreen";
+//import UserProfile from './src/screens/UserProfile/UserProfile';
+//import AllUsers from './src/screens/AllUsers/AllUsers';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import FindPlaceScreen  from './src/screens/FindPlace/FindPlace';
 import PlaceDetailScreen from "./src/screens/PlaceDetail/PlaceDetail";
@@ -12,6 +13,13 @@ import configureStore from "./src/store/configureStore";
 const store = configureStore();
 
 // Register Screens
+
+Navigation.registerComponent(
+    "FYP.FirstScreen",
+    () => FirstScreen,
+    store,
+    Provider
+);
 Navigation.registerComponent(
     "awesome-places.AuthScreen",
     () => AuthScreen,

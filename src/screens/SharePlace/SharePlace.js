@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { connect } from "react-redux";
 import LastName from '../../components/PlaceInput/LastName';
-import { addPlace } from "../../store/actions/index";
+import { addPlace, getUserLoginData } from "../../store/actions/index";
 import PlaceInput from "../../components/PlaceInput/PlaceInput";
 import ContactInput from '../../components/PlaceInput/Contact';
 import MainText from "../../components/UI/MainText/MainText";
@@ -26,10 +26,20 @@ class SharePlaceScreen extends Component {
 		navBarButtonColor: "orange"
 	};
 
+	
+	
+
+	constructor(props) {
+		super(props);
+		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
+		this.props.onLoginUser();
+	}
+	// Open calender 
 	state = {
 		controls: {
 			firstName: {
-				value: "",
+				
+				value:"",
 				valid: false,
 				touched: false,
 				validationRules: {
@@ -37,11 +47,13 @@ class SharePlaceScreen extends Component {
 				}
 			},
 			image:{
-				value:null,
+				
+				value:"",
 				valid: false
 			},
 			lastName:{
-				value: "",
+				
+				value:"",
 				valid: false,
 				touched: false,
 				validationRules: {
@@ -49,10 +61,11 @@ class SharePlaceScreen extends Component {
 				}
 			},
 			birthday:{
-				value: "26-2-1995"
+				
+				value:"26-2-1995"
 			},
 			phonenumber:{
-				value: "",
+				value:"",
 				valid: false,
 				touched: false,
 				
@@ -63,13 +76,6 @@ class SharePlaceScreen extends Component {
 			}
 		}
 	};
-
-	constructor(props) {
-		super(props);
-		this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
-	}
-	// Open calender 
-
 	async openAndroidDatePicker() {
 		//month start here 0 0-jan
 		try {
@@ -120,7 +126,8 @@ class SharePlaceScreen extends Component {
 			}
 		});
 	}
-
+	
+	
 	placeAddedHandler = () => {
 		if (this.state.controls.firstName.value.trim() !== "") {
 			this.props.onAddPlace(
@@ -146,8 +153,11 @@ class SharePlaceScreen extends Component {
 			}
 		})
 	}
-
+	componentDidMount() {
+		this.props.onLoginUser();
+	}
 	render() {
+		let loading ;
 		let submitButton = <Button
 		title="Save Your Info"
 		onPress={this.placeAddedHandler}
@@ -162,8 +172,14 @@ class SharePlaceScreen extends Component {
 		if(this.props.isLoading){
 			submitButton = <ActivityIndicator size="large" color="orange" />
 		}
+
+		if(!this.props.userData){
+			return  <ActivityIndicator size="large" color="orange" />
+		}
+		
 		return (
 		<ScrollView>
+			
 			<View style={styles.container}>
 				<MainText>
 					<HeadingText>Your Profile</HeadingText>
@@ -211,14 +227,17 @@ const styles = StyleSheet.create({
 });
 
 const mapStateToProps = state => {
+	
 	return {
-		isLoading: state.ui.isLoading
+		isLoading: state.ui.isLoading,
+		userData: state.places.userData
 	}
 };
 
 const mapDispatchToProps = dispatch => {
 	return {
-		onAddPlace: (firstName,image,lastName,birthday,phonenumber) => dispatch(addPlace(firstName,image,lastName,birthday,phonenumber))
+		onAddPlace: (firstName,image,lastName,birthday,phonenumber) => dispatch(addPlace(firstName,image,lastName,birthday,phonenumber)),
+		onLoginUser: () => dispatch(getUserLoginData())
 	};
 };
 

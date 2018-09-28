@@ -13,7 +13,7 @@ import {
   ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
-
+import { Navigation } from "react-native-navigation";
 
 import DefaultInput from "../../components/UI/DefaultInput/DefaultInput";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
@@ -65,7 +65,13 @@ class AuthScreen extends Component {
   }
 
   componentDidMount(){
-    this.props.onAutoSingin();
+    Navigation.startSingleScreenApp({
+      screen: {
+          screen: "FYP.FirstScreen",
+          title: "Add Your Basic Info"
+      }
+  });
+    //this.props.onAutoSingin();
   }
 
   switchAuthModeHandler = () => {

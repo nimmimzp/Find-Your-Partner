@@ -1,10 +1,12 @@
-import { SET_PLACES,REMOVE_PLACE } from "../actions/actionTypes";
+import { SET_PLACES,REMOVE_PLACE,AUTH_LOGIN_USER } from "../actions/actionTypes";
 
 const initialState = {
- 	places: []
+	 places: [],
+	 userData: []
 };
 
 const reducer = (state = initialState, action) => {
+	
 	switch (action.type) {
 		
 		case REMOVE_PLACE:
@@ -18,6 +20,11 @@ const reducer = (state = initialState, action) => {
 			return{
 				...state,
 				places:action.places
+			}
+		case AUTH_LOGIN_USER:
+			return{
+				...state,
+				userData:action.userData
 			}
 		default:
 			return state;

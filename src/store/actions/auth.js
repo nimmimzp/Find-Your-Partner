@@ -1,5 +1,6 @@
 import { AsyncStorage } from 'react-native';
-import { TRY_AUTH, AUTH_SET_TOKEN } from './actionTypes';
+import { Navigation } from "react-native-navigation";
+import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_SET_USERID } from './actionTypes';
 import {uiStartLoading,uiStopLoading} from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs'
 //import { Promise } from 'winjs';
@@ -28,10 +29,26 @@ export const tryAuth = (authData,authMode) => {
         .then(parsedRes => {
             dispatch(uiStopLoading());
             if(!parsedRes.idToken){
-                console.log('Soory, Authentication faild')
+                alert('Soory, Authentication faild')
             }else{
-                dispatch(authStoreToken(parsedRes.idToken,parsedRes.expiresIn));
-                startMainTabs();
+                dispatch(authStoreToken(parsedRes.idToken,parsedRes.expiresIn,parsedRes.localId));
+                if(authMode === "signup"){
+                    Navigation.startSingleScreenApp({
+                        screen: {
+                            screen: "FYP.FirstScreen",
+                            title: "Add Your Basic Info"
+                        }
+                    });
+                }else{
+                    Navigation.startSingleScreenApp({
+                        screen: {
+                            screen: "FYP.FirstScreen",
+                            title: "Add Your Basic Info"
+                        }
+                    });
+                    //startMainTabs();
+                }
+                
             }
         })
         .catch(err => {
@@ -44,17 +61,27 @@ export const tryAuth = (authData,authMode) => {
 };
 
 export const authSetToken = token => {
+   
     return {
         type: AUTH_SET_TOKEN,
         token : token
     }
 };
 
+export const authSetUserId = userId =>{
+    return{
+        type: AUTH_SET_USERID,
+        userId: userId
+    }
+};
+
 
 export const authGetToken = () => {
+    
     return (dispatch,getState) => {
         const promise = new Promise((resolve,reject)=> {
             const token  =  getState().auth.token
+           
             if(!token){
                 let authTokenFromStorage;
                 AsyncStorage.getItem("fyp:auth:token")
@@ -92,20 +119,22 @@ export const authGetToken = () => {
     }
 };
 
-export const authStoreToken = (token,expiresIn) => {
+export const authStoreToken = (token,expiresIn,userId) => {
     return dispatch => {
+        dispatch(authSetUserId(userId));
         dispatch(authSetToken(token));
         const now = new Date();
         const expiryDate = now.getTime()+expiresIn*1000
         AsyncStorage.setItem("fyp:auth:token",token);
         AsyncStorage.setItem("fyp:auth:expiryDate",expiryDate.toString());
+        AsyncStorage.setItem("fyp:auth:userId",userId);
     }
 }
 
 export const authAutoSignedIn = ()  => {
+    
     return dispatch => {
         dispatch(authGetToken())
-            
             .then(token => {
                 startMainTabs();
             })
@@ -118,4 +147,36 @@ export const authClearStorage = () => {
         AsyncStorage.removeItem("fyp:auth:token");
         AsyncStorage.removeItem("fyp:auth:expiryDate");;
     }
-}
+};
+
+export const authGetUserId = () => {
+    return (dispatch,getState) => {
+        const promise = new Promise((resolve,reject)=> {
+            const userId  =  getState().auth.userId
+           
+            if(!userId){
+                let authuserIdFromStorage;
+                AsyncStorage.getItem("fyp:auth:userId")
+                    .catch(err => reject())
+                    .then(userIdFromStorage => {
+                        authuserIdFromStorage = userIdFromStorage;
+                        if(!userIdFromStorage){
+                            reject();
+                            return;
+                        }
+                        dispatch(authSetUserId(authuserIdFromStorage));
+                        resolve(authuserIdFromStorage);
+                      
+                    })
+                    .catch(err =>  reject());
+                    
+            }else{
+                resolve(userId);
+            }
+        });
+        promise.catch(err =>{
+            dispatch(authClearStorage())
+        } )
+        return promise;
+    }
+};
