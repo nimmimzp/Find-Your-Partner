@@ -195,4 +195,19 @@ export const getUserLoginData = () => {
                 })
             })
     }
+};
+
+
+export const addUserDetail = (firstName,lastName,city,state,phonenumber) => {
+    let authUserId;
+    return dispatch =>{
+        dispatch(uiStartLoading());
+        dispatch(authGetUserId())
+            .catch(err=>{
+                console.log(err)
+            })
+            .then(userId=>{
+                console.log(userId)
+            })
+    }
 }

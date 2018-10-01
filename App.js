@@ -2,6 +2,9 @@ import { Navigation } from "react-native-navigation";
 import { Provider } from "react-redux";
 import AuthScreen from "./src/screens/Auth/Auth";
 import FirstScreen  from "./src/screens/FirstScreen/FirstScreen";
+import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
+import SecondScreen from './src/screens/SecondScreen/SecondScreen';
+import ThirdScreen from './src/screens/ThirdScreen/ThirdScreen';
 //import UserProfile from './src/screens/UserProfile/UserProfile';
 //import AllUsers from './src/screens/AllUsers/AllUsers';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
@@ -17,6 +20,27 @@ const store = configureStore();
 Navigation.registerComponent(
     "FYP.FirstScreen",
     () => FirstScreen,
+    store,
+    Provider
+);
+
+Navigation.registerComponent(
+    "FYP.SecondScreen",
+    () => SecondScreen,
+    store,
+    Provider
+);
+
+Navigation.registerComponent(
+    "FYP.ThirdScreen",
+    () => ThirdScreen,
+    store,
+    Provider
+);
+
+Navigation.registerComponent(
+    "FYP.ProfileScreen",
+    () => ProfileScreen,
     store,
     Provider
 );
