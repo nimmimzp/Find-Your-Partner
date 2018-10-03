@@ -182,7 +182,7 @@ class FirstScreen extends Component{
         let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
-          }
+        }
         return(
             <ScrollView>
             
@@ -298,24 +298,13 @@ class FirstScreen extends Component{
                         }
                         
                         })}>
+                    <Picker.Item label="Less Than Graduate" value="Less Than Graduate" />
                     <Picker.Item label="Gradute" value="Gradute" />
                     <Picker.Item label="Post Gradute" value="Post Graduate" />
-                    <Picker.Item label="Less Than Graduate" value="Less Than Graduate" />
-                    
-                    
                 </Picker>
             </View>
             
-            <DefaultInput 
-                value={this.state.controls.state.value} 
-                placeholder="State" 
-                onChangeText={val => this.updateInputState("state", val)}
-            />
-            <DefaultInput 
-                Value={this.state.controls.city.value} 
-                placeholder="City"
-                onChangeText={val => this.updateInputState("city", val)}
-            />
+            {/* z */}
             {submitButton}
             </ScrollView>
         )

@@ -9,7 +9,7 @@ import {
     TouchableOpacity,
     KeyboardAvoidingView,ScrollView
 } from "react-native";
-import { connect } from "react-redux";
+
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import validate from '../../utility/validation';
 
@@ -20,10 +20,6 @@ class SecondScreen extends Component{
         super(props);
         
     }
-
-    // componentDidMount(){
-    //     console.log(this.props)
-    // }
     state = {
         controls:{
             state:{
@@ -72,23 +68,25 @@ class SecondScreen extends Component{
     } 
     
     addBasicInfoOfUser = () => {
-        let newUserData = this.props.userData;
-        newUserData.state= this.state.controls.state;
-        newUserData.city= this.state.controls.city;
-        newUserData.pincode= this.state.controls.pincode;
-        console.log(newUserData);
+        let newUserData ={
+            state:this.state.controls.state.value,
+            city:this.state.controls.city.value,
+            pincode:this.state.controls.pincode.value
+        };
         this.props.navigator.push({
             screen: "FYP.ThirdScreen",
             title: "About Your Religion",
             passProps: {
-                userData: newUserData
+                userData: this.props.userData,
+                userStateData: newUserData
             }
         });
+      //  console.log(newUserData);
     }
     render(){
         return(
             <ScrollView>
-                 <DefaultInput 
+                <DefaultInput 
                     value={this.state.controls.state.value} 
                     placeholder="State" 
                     onChangeText={val => this.updateInputState("state", val)}

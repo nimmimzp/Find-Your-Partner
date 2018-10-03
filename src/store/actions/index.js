@@ -2,4 +2,4 @@ export { addPlace, deletePlace, getPlaces, getUserLoginData,addUserDetail } from
 export { tryAuth, authGetToken, authAutoSignedIn,authGetUserId } from './auth';
 export {uiStartLoading,uiStopLoading} from './ui';
 
-export { addUserInfo} from "./user";
+export { addUserInfo, updateProfile} from "./user";

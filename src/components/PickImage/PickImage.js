@@ -55,14 +55,14 @@ const styles = StyleSheet.create({
       paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
     },
     button: {
-      margin: 8
+      margin: 50
     },
     MainContainer:{
       flex: 1,
       justifyContent: 'center',
       alignItems: 'center',
       margin: 5,
-      paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+      paddingTop: 70
     },
     previewImage: {
         width: "100%",

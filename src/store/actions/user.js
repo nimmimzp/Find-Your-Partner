@@ -1,5 +1,5 @@
 import { AsyncStorage } from 'react-native';
-import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
+//import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
 import { Navigation } from "react-native-navigation";
 import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId } from './index';
 import * as firebase from 'firebase';
@@ -18,9 +18,10 @@ const firebaseConfig = {
 const userRef  = firebase.database().ref("users");
 
 
-export const addUserInfo = (updatedUserData) => {
-    console.log(updatedUserData)
+export const addUserInfo = (updatedUserData,userStateData,userReligionData) => {
     let authUserId;
+    let saveUserData;
+    let userKey;
     return  dispatch => {   
         dispatch(uiStartLoading());
         dispatch(authGetUserId())
@@ -28,7 +29,7 @@ export const addUserInfo = (updatedUserData) => {
                 alert('Invalid User Id')
             })
             .then(userId =>{
-                console.log(userId)
+              
                 authUserId = userId;
                 let userDetail = userRef.orderByChild("userId").equalTo(authUserId);
                 userDetail.on('value',(snap) =>{
@@ -40,29 +41,50 @@ export const addUserInfo = (updatedUserData) => {
                             key: child.key
                         })
                     })
-                    updatedUserData.userId=authUserId
+                    
+                   // updatedUserData['userId']=authUserId;
+                    saveUserData = {
+                        firstName:updatedUserData.firstName,
+                        lastName:updatedUserData.lastName,
+                        phonenumber:updatedUserData.phonenumber,
+                        height:updatedUserData.height,
+                        gender:updatedUserData.gender,
+                        birthday:updatedUserData.birthday,
+                        education:updatedUserData.education,
+                        marriedStatus:updatedUserData.marriedStatus,
+                        state:userStateData.state,
+                        city:userStateData.city,
+                        pincode:userStateData.pincode,
+                        religion: userReligionData.religion,
+                        motherTounge: userReligionData.motherTounge,
+                        caste: userReligionData.caste,
+                        userId:authUserId
 
-                   
+                    }
+                    
                     if(userData.length === 0){
                         
                         return fetch("https://react-native-1536905661123.firebaseio.com/users.json?auth=" + authToken,{
                             method:"POST",
-                            body:JSON.stringify(updatedUserData)
+                            body:JSON.stringify(saveUserData)
                         })
                     }else{
-                        return firebase.database().ref('users/' + userData[0].key).update(updatedUserData);
+                        return firebase.database().ref('users/' + userData[0].key).update(saveUserData);
                         
                     }
                         })
                     })
                     .then(parsedRes => {
+                        dispatch(uiStopLoading());
                         Navigation.startSingleScreenApp({
                             screen: {
-                                screen: "FYP.ProfileScreen",
-                                title: "Profile"
+                                screen: "FYP.UploadProfile",
+                                title: "Upload A Profile Picture"
                             },
                             passProps:{
-                                userData:updatedUserData
+                                userId:authUserId,
+                               // userStateData:userStateData,
+                                //userReligionData:userReligionData
                             }
                         });
                     })
@@ -70,5 +92,66 @@ export const addUserInfo = (updatedUserData) => {
                         dispatch(uiStopLoading());
                         console.warn(err);
                     });     
+    }
+};
+
+
+export const updateProfile = (image,userId) => {
+    let authToken
+    return  dispatch => {
+        dispatch(uiStartLoading());
+        dispatch(authGetToken())
+            .catch(err => {
+                alert('Invalid token ')
+            })
+            .then(token => {
+                authToken = token;
+                return fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeUserImage",{
+                    method:"POST",
+                    body:JSON.stringify({
+                        image:image.base64
+                    }),
+                    headers:{
+                        "Authorization": "Bearer " + token
+                    }
+                })
+            })
+            .then(parsedRes => {
+                console.log(parsedRes)
+                let imageUrl = parsedRes.url;
+                let userDetail = userRef.orderByChild("userId").equalTo(userId);
+                userDetail.on('value',(snap) =>{
+                    let userData = [];
+                    snap.forEach((child) => {
+                        userData.push({
+                            firstName: child.val().firstName,
+                            lastName: child.val().lastName,
+                            phonenumber:child.val().phonenumber,
+                            height:child.val().height,
+                            gender:child.val().gender,
+                            birthday:child.val().birthday,
+                            education:child.val().education,
+                            marriedStatus:child.val().marriedStatus,
+                            state:child.val().state,
+                            city:child.val().city,
+                            pincode:child.val().pincode,
+                            religion: child.val().religion,
+                            motherTounge: child.val().motherTounge,
+                            caste: child.val().caste,
+                            key: child.key
+                        })
+                    })
+                    userUpdatedData = {
+                        image:imageUrl
+                    }
+                    return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+                })
+                //return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+            })
+            .then(parsedRes =>{
+                
+                dispatch(uiStopLoading());
+               // console.log(userData)
+            })
     }
 };
