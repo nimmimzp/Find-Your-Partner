@@ -1,7 +1,8 @@
 import { AsyncStorage } from 'react-native';
 //import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
 import { Navigation } from "react-native-navigation";
-import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId } from './index';
+import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId,authSetLoginUser } from './index';
+import startMainTabs from '../../screens/MainTabs/startMainTabs'
 import * as firebase from 'firebase';
 
 
@@ -83,8 +84,6 @@ export const addUserInfo = (updatedUserData,userStateData,userReligionData) => {
                             },
                             passProps:{
                                 userId:authUserId,
-                               // userStateData:userStateData,
-                                //userReligionData:userReligionData
                             }
                         });
                     })
@@ -124,6 +123,24 @@ export const updateProfile = (image,userId) => {
                     let userData = [];
                     snap.forEach((child) => {
                         userData.push({
+                            key: child.key
+                        })
+                    })
+                    userUpdatedData = {
+                        image:imageUrl
+                    }
+                    return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+                })
+                //return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+            })
+            .then(parsedRes =>{
+                
+                dispatch(uiStopLoading());
+                let userDetail = userRef.orderByChild("userId").equalTo(userId);
+                userDetail.on('value',(snap) =>{
+                    let userData = [];
+                    snap.forEach((child) => {
+                        userData.push({
                             firstName: child.val().firstName,
                             lastName: child.val().lastName,
                             phonenumber:child.val().phonenumber,
@@ -141,17 +158,26 @@ export const updateProfile = (image,userId) => {
                             key: child.key
                         })
                     })
-                    userUpdatedData = {
-                        image:imageUrl
-                    }
-                    return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+                    dispatch(authSetLoginUser(userData));
+                    startMainTabs(userData);
                 })
-                //return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
-            })
-            .then(parsedRes =>{
-                
-                dispatch(uiStopLoading());
-               // console.log(userData)
             })
     }
 };
+
+
+
+export const updateUser = (userData) => {
+    console.log(userData);
+    return  dispatch => {   
+        dispatch(uiStartLoading());
+        dispatch(authGetUserId())
+            .catch(err => {
+                console.log("Invalid")
+            })
+            .then(userId => {
+                firebase.database().ref('users/' + userData.key).update(userData);
+                dispatch(uiStopLoading());
+            })
+    }
+}

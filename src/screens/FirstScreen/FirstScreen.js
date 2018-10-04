@@ -90,7 +90,7 @@ class FirstScreen extends Component{
 				value:"26-2-1995"
             },
             marriedStatus:{
-                value:"0"
+                value:"Gradute"
             },
             education:{
                 value:"0"

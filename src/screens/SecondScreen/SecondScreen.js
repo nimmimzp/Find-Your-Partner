@@ -1,24 +1,14 @@
 import React, { Component } from "react";
 import {
-    View,
-    Picker,
-    DatePickerAndroid,
-    Text,
-    Platform,
-    ActivityIndicator,
-    TouchableOpacity,
-    KeyboardAvoidingView,ScrollView
+   ScrollView
 } from "react-native";
 
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import validate from '../../utility/validation';
-
-import Icon from "react-native-vector-icons/Ionicons";
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
 class SecondScreen extends Component{
     constructor(props) {
         super(props);
-        
     }
     state = {
         controls:{

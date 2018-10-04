@@ -1,9 +1,22 @@
 import { AsyncStorage } from 'react-native';
 import { Navigation } from "react-native-navigation";
-import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_SET_USERID } from './actionTypes';
+import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_SET_USERID, SET_USER_INFO } from './actionTypes';
 import {uiStartLoading,uiStopLoading} from './index';
-import startMainTabs from '../../screens/MainTabs/startMainTabs'
-//import { Promise } from 'winjs';
+import startMainTabs from '../../screens/MainTabs/startMainTabs';
+import * as firebase from 'firebase';
+
+
+const firebaseConfig = {
+    apiKey: "AIzaSyBhUyFsb_fRSct-Aw_plWtNxOfWCY4XPig",
+    authDomain: "react-native-1536905661123.firebaseapp.com",
+    databaseURL: "https://react-native-1536905661123.firebaseio.com",
+    projectId: "react-native-1536905661123",
+    storageBucket: "react-native-1536905661123.appspot.com",   
+}
+
+
+//const firebaseApp1 = firebase.initializeApp(firebaseConfig);
+const userRef  = firebase.database().ref("users");
 export const tryAuth = (authData,authMode) => {
     return dispatch => {
         dispatch(uiStartLoading());
@@ -40,12 +53,31 @@ export const tryAuth = (authData,authMode) => {
                         }
                     });
                 }else{
-                    Navigation.startSingleScreenApp({
-                        screen: {
-                            screen: "FYP.FirstScreen",
-                            title: "Add Your Basic Info"
-                        }
-                    });
+                    let userDetail = userRef.orderByChild("userId").equalTo(parsedRes.localId);
+                    userDetail.on('value',(snap) =>{
+                        let userData = [];
+                        snap.forEach((child) => {
+                            userData.push({
+                                firstName: child.val().firstName,
+                                lastName: child.val().lastName,
+                                phonenumber:child.val().phonenumber,
+                                height:child.val().height,
+                                gender:child.val().gender,
+                                birthday:child.val().birthday,
+                                education:child.val().education,
+                                marriedStatus:child.val().marriedStatus,
+                                state:child.val().state,
+                                city:child.val().city,
+                                pincode:child.val().pincode,
+                                religion: child.val().religion,
+                                motherTounge: child.val().motherTounge,
+                                caste: child.val().caste,
+                                key: child.key
+                            })
+                        })
+                        dispatch(authSetLoginUser(userDetail));
+                        startMainTabs(userData);                            
+                    })
                     //startMainTabs();
                 }
                 
@@ -134,11 +166,49 @@ export const authStoreToken = (token,expiresIn,userId) => {
 export const authAutoSignedIn = ()  => {
     
     return dispatch => {
+        dispatch(uiStartLoading());
         dispatch(authGetToken())
             .then(token => {
-                startMainTabs();
+                dispatch(authGetUserId())
+                    .catch(err => {
+                        console.log("Faild to get User ID");
+                        dispatch(uiStopLoading());s
+                    })
+                    .then(userId=>{
+                        let userDetail = userRef.orderByChild("userId").equalTo(userId);
+                        userDetail.on('value',(snap) =>{
+                            let userData = [];
+                            snap.forEach((child) => {
+                                userData.push({
+                                    firstName: child.val().firstName,
+                                    lastName: child.val().lastName,
+                                    phonenumber:child.val().phonenumber,
+                                    height:child.val().height,
+                                    gender:child.val().gender,
+                                    birthday:child.val().birthday,
+                                    education:child.val().education,
+                                    marriedStatus:child.val().marriedStatus,
+                                    state:child.val().state,
+                                    city:child.val().city,
+                                    pincode:child.val().pincode,
+                                    religion: child.val().religion,
+                                    motherTounge: child.val().motherTounge,
+                                    caste: child.val().caste,
+                                    key: child.key
+                                })
+                            })
+                            dispatch(authSetLoginUser(userDetail));
+                            dispatch(uiStopLoading());
+                            startMainTabs(userData);                            
+                        })
+
+                    })
+                
             })
-            .catch(err => console.log("Failed to get token"));
+            .catch(err => {
+                console.log("Failed to get token")
+                dispatch(uiStopLoading());
+            });
     }
 };
 
@@ -178,5 +248,13 @@ export const authGetUserId = () => {
             dispatch(authClearStorage())
         } )
         return promise;
+    }
+};
+
+
+export const authSetLoginUser = loginUserData =>{
+    return{
+        type: SET_USER_INFO,
+        loginUserInfo: loginUserData
     }
 };

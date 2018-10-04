@@ -65,13 +65,13 @@ class AuthScreen extends Component {
   }
 
   componentDidMount(){
-    Navigation.startSingleScreenApp({
-      screen: {
-          screen: "FYP.FirstScreen",
-          title: "Add Your Basic Info"
-      }
-  });
-    //this.props.onAutoSingin();
+  //   Navigation.startSingleScreenApp({
+  //     screen: {
+  //         screen: "FYP.FirstScreen",
+  //         title: "Add Your Basic Info"
+  //     }
+  // });
+   this.props.onAutoSingin();
   }
 
   switchAuthModeHandler = () => {

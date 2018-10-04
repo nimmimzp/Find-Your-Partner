@@ -13,3 +13,5 @@ export const AUTH_SET_USERID = "AUTH_SET_USERID";
 export const AUTH_LOGIN_USER = "AUTH_LOGIN_USER";
 
 export const ADD_USER_INFO = "ADD_USER_INFO";
+
+export const SET_USER_INFO = "SET_USER_INFO";

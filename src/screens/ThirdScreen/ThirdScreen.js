@@ -9,7 +9,6 @@ import { connect } from "react-redux";
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import validate from '../../utility/validation';
 import { addUserInfo } from "../../store/actions/index";
-import Icon from "react-native-vector-icons/Ionicons";
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
 class ThirdScreen extends Component{
     constructor(props) {
@@ -60,14 +59,11 @@ class ThirdScreen extends Component{
     } 
     
     addBasicInfoOfUser = () => {
-        //console.log(this.props)
-
         let aboutReligion = {
             religion: this.state.controls.religion.value,
             motherTounge: this.state.controls.motherTounge.value,
             caste: this.state.controls.caste.value
         }
-       // console.log(aboutReligion)
         this.props.onAddUserInfo(this.props.userData,this.props.userStateData,aboutReligion);
     }
     render(){

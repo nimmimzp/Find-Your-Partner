@@ -6,6 +6,8 @@ import ProfileScreen from './src/screens/ProfileScreen/ProfileScreen';
 import SecondScreen from './src/screens/SecondScreen/SecondScreen';
 import ThirdScreen from './src/screens/ThirdScreen/ThirdScreen';
 import UploadProfile from './src/screens/UploadProfile/UploadProfile';
+import StateScreen from './src/screens/StateScreen/StateScreen';
+import ReligionScreen from './src/screens/ReligionScreen/ReligionScreen';
 //import AllUsers from './src/screens/AllUsers/AllUsers';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import FindPlaceScreen  from './src/screens/FindPlace/FindPlace';
@@ -51,6 +53,19 @@ Navigation.registerComponent(
     store,
     Provider
 );
+
+Navigation.registerComponent(
+    "FYP.StateScreen",
+    () => StateScreen,
+    store,
+    Provider
+);
+Navigation.registerComponent(
+    "FYP.ReligionScreen",
+    () => ReligionScreen,
+    store,
+    Provider
+);
 Navigation.registerComponent(
     "awesome-places.AuthScreen",
     () => AuthScreen,
@@ -69,6 +84,8 @@ Navigation.registerComponent("awesome-places.SharePlaceScreen",
 	Provider
 );
 
+
+
 Navigation.registerComponent(
 	"awesome-places.PlaceDetailScreen",
 	() => PlaceDetailScreen,
@@ -81,6 +98,13 @@ Navigation.registerComponent(
 );
 
 // Start a App
+Navigation.startSingleScreenApp({
+	screen: {
+		screen: "awesome-places.AuthScreen",
+		title: "Login"
+	}
+});
+
 Navigation.startSingleScreenApp({
 	screen: {
 		screen: "awesome-places.AuthScreen",
