@@ -7,7 +7,7 @@ import {
     Platform,
     ActivityIndicator,
     TouchableOpacity,
-    KeyboardAvoidingView,ScrollView
+    ScrollView
 } from "react-native";
 import { connect } from "react-redux";
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
@@ -126,6 +126,7 @@ class FirstScreen extends Component{
 	}
 
     selectRadionButtonHandler = (data) => {
+        data[1].value = 1;
         this.setState((prevState,data) =>{
             return {
                 ...prevState,
@@ -156,8 +157,6 @@ class FirstScreen extends Component{
             {
                 firstName:this.state.controls.firstName.value,
                 lastName:this.state.controls.lastName.value,
-               // city:this.state.controls.city.value,
-                //state: this.state.controls.state.value,
                 phonenumber:this.state.controls.phonenumber.value,
                 height:this.state.controls.height.value,
                 gender:gender,
@@ -165,7 +164,6 @@ class FirstScreen extends Component{
                 education:this.state.controls.education.value,
                 marriedStatus:this.state.controls.marriedStatus.value
             }
-            //this.props.onAddUserInfo(userData);
             this.props.navigator.push({
                 screen: "FYP.SecondScreen",
                 title: "About Your Place",

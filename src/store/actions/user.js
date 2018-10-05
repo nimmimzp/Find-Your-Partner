@@ -22,7 +22,7 @@ const userRef  = firebase.database().ref("users");
 export const addUserInfo = (updatedUserData,userStateData,userReligionData) => {
     let authUserId;
     let saveUserData;
-    let userKey;
+    let authToken;
     return  dispatch => {   
         dispatch(uiStartLoading());
         dispatch(authGetUserId())
@@ -30,49 +30,52 @@ export const addUserInfo = (updatedUserData,userStateData,userReligionData) => {
                 alert('Invalid User Id')
             })
             .then(userId =>{
-              
                 authUserId = userId;
-                let userDetail = userRef.orderByChild("userId").equalTo(authUserId);
-                userDetail.on('value',(snap) =>{
-                    let userData = [];
-                    snap.forEach((child) => {
-                        userData.push({
-                            firstName: child.val().firstName,
-                            lastName: child.val().lastName,
-                            key: child.key
-                        })
+                dispatch(authGetToken())
+                    .catch(err => {
+                        console.log('Auth Token not found')
                     })
-                    
-                   // updatedUserData['userId']=authUserId;
-                    saveUserData = {
-                        firstName:updatedUserData.firstName,
-                        lastName:updatedUserData.lastName,
-                        phonenumber:updatedUserData.phonenumber,
-                        height:updatedUserData.height,
-                        gender:updatedUserData.gender,
-                        birthday:updatedUserData.birthday,
-                        education:updatedUserData.education,
-                        marriedStatus:updatedUserData.marriedStatus,
-                        state:userStateData.state,
-                        city:userStateData.city,
-                        pincode:userStateData.pincode,
-                        religion: userReligionData.religion,
-                        motherTounge: userReligionData.motherTounge,
-                        caste: userReligionData.caste,
-                        userId:authUserId
-
-                    }
-                    
-                    if(userData.length === 0){
+                    .then(authToken => {
+                        authToken = authToken;
                         
-                        return fetch("https://react-native-1536905661123.firebaseio.com/users.json?auth=" + authToken,{
-                            method:"POST",
-                            body:JSON.stringify(saveUserData)
-                        })
-                    }else{
-                        return firebase.database().ref('users/' + userData[0].key).update(saveUserData);
+                        let userDetail = userRef.orderByChild("userId").equalTo(authUserId);
+                        userDetail.on('value',(snap) =>{
+                            let userData = [];
+                            snap.forEach((child) => {
+                                userData.push({
+                                    firstName: child.val().firstName,
+                                    lastName: child.val().lastName,
+                                    key: child.key
+                                })
+                            })
+                            saveUserData = {
+                                firstName:updatedUserData.firstName,
+                                lastName:updatedUserData.lastName,
+                                phonenumber:updatedUserData.phonenumber,
+                                height:updatedUserData.height,
+                                gender:updatedUserData.gender,
+                                birthday:updatedUserData.birthday,
+                                education:updatedUserData.education,
+                                marriedStatus:updatedUserData.marriedStatus,
+                                state:userStateData.state,
+                                city:userStateData.city,
+                                pincode:userStateData.pincode,
+                                religion: userReligionData.religion,
+                                motherTounge: userReligionData.motherTounge,
+                                caste: userReligionData.caste,
+                                userId:authUserId
+        
+                            }
+                            if(userData.length === 0){
                         
-                    }
+                                return fetch("https://react-native-1536905661123.firebaseio.com/users.json?auth=" + authToken,{
+                                    method:"POST",
+                                    body:JSON.stringify(saveUserData)
+                                })
+                            }else{
+                                return firebase.database().ref('users/' + userData[0].key).update(saveUserData);
+                                
+                            }
                         })
                     })
                     .then(parsedRes => {
@@ -87,10 +90,11 @@ export const addUserInfo = (updatedUserData,userStateData,userReligionData) => {
                             }
                         });
                     })
-                    .catch(err => {
-                        dispatch(uiStopLoading());
-                        console.warn(err);
-                    });     
+            })
+            .catch(err => {
+                dispatch(uiStopLoading());
+                console.warn(err);
+            });     
     }
 };
 

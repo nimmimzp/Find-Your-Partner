@@ -40,6 +40,7 @@ export const tryAuth = (authData,authMode) => {
         
         .then(res=>res.json())
         .then(parsedRes => {
+            console.log(parsedRes);
             dispatch(uiStopLoading());
             if(!parsedRes.idToken){
                 alert('Soory, Authentication faild')
@@ -72,10 +73,11 @@ export const tryAuth = (authData,authMode) => {
                                 religion: child.val().religion,
                                 motherTounge: child.val().motherTounge,
                                 caste: child.val().caste,
-                                key: child.key
+                                key: child.key,
+                                userId:parsedRes.localId
                             })
                         })
-                        dispatch(authSetLoginUser(userDetail));
+                        dispatch(authSetLoginUser(userData));
                         startMainTabs(userData);                            
                     })
                     //startMainTabs();
@@ -194,7 +196,8 @@ export const authAutoSignedIn = ()  => {
                                     religion: child.val().religion,
                                     motherTounge: child.val().motherTounge,
                                     caste: child.val().caste,
-                                    key: child.key
+                                    key: child.key,
+                                    userId:userId
                                 })
                             })
                             dispatch(authSetLoginUser(userDetail));

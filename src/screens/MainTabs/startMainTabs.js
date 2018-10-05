@@ -25,20 +25,6 @@ const startTabs = (props) => {
                             }
                         ]
                     }
-                },{
-                    screen: "awesome-places.FindPlaceScreen",
-                    label: "All Users",
-                    title: "All Users",
-                    icon: sources[0],
-                    navigatorButtons: {
-                        leftButtons: [
-                            {
-                                icon: sources[2],
-                                title: "Menu",
-                                id: "sideDrawerToggle"
-                            }
-                        ]
-                    }
                 },
                 {
                     screen: "FYP.StateScreen",
@@ -69,10 +55,26 @@ const startTabs = (props) => {
                             }
                         ]
                     }
+                },
+                {
+                    screen: "awesome-places.FindPlaceScreen",
+                    label: "All Users",
+                    title: "All Users",
+                    icon: sources[0],
+                    navigatorButtons: {
+                        leftButtons: [
+                            {
+                                icon: sources[2],
+                                title: "Menu",
+                                id: "sideDrawerToggle"
+                            }
+                        ]
+                    }
                 }
             ],
             tabsStyle: {
-                tabBarSelectedButtonColor: "orange"
+                tabBarSelectedButtonColor: "orange",
+                initialTabIndex:2,
             },
             drawer: {
                 left: {

@@ -72,7 +72,11 @@ class FindPlaceScreen extends Component {
   };
 
   componentDidMount() {
-    this.props.onLoadPlaces();
+    let userData = {
+      userId: this.props.userData[0].userId,
+      userGender:this.props.userData[0].gender
+    }
+    this.props.onLoadPlaces(userData);
   }
 
   render() {
@@ -93,7 +97,7 @@ class FindPlaceScreen extends Component {
       >
         <TouchableOpacity onPress={this.placesSearchHandler}>
           <View style={styles.searchButton}>
-            <Text style={styles.searchButtonText}>Find Places</Text>
+            <Text style={styles.searchButtonText}>Find Your Match</Text>
           </View>
         </TouchableOpacity>
       </Animated.View>
@@ -141,7 +145,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return{
-    onLoadPlaces: () => dispatch(getPlaces())
+    onLoadPlaces: (userData) => dispatch(getPlaces(userData))
   }
 }
 

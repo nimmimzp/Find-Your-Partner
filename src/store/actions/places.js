@@ -94,21 +94,26 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
     }
 };
 
-export const getPlaces = () => {
+
+export const getPlaces = (filter) => {
+    console.log(filter)
     return dispatch => {
         dispatch(authGetToken())
             .then(token => {
                 userRef.on('value',(snap) =>{
                     let userData = [];
                     snap.forEach((child) => {
-                        userData.push({
-                            firstName: child.val().firstName,
-                            lastName: child.val().lastName,
-                            image:{
-                                uri:child.val().image
-                            },
-                            key: child.key
-                        })
+                        if((filter.userId !== child.val().userId) && (filter.userGender !== child.val().gender)){
+                            userData.push({
+                                firstName: child.val().firstName,
+                                lastName: child.val().lastName,
+                                image:{
+                                    uri:child.val().image
+                                },
+                                key: child.key
+                            })
+                        }
+                        
                     })
                     dispatch(setPlaces(userData));
                 })
