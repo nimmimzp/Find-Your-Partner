@@ -23,7 +23,6 @@ class FindPlaceScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 

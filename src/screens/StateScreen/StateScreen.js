@@ -8,9 +8,22 @@ import { connect } from "react-redux";
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
 import {updateUser} from "../../store/actions/index";
 class StateScreen extends Component{
+    static navigatorStyle = {
+        navBarButtonColor: "orange"
+    };
     constructor(props) {
         super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
+    onNavigatorEvent = event => {
+        if (event.type === "NavBarButtonPress") {
+            if (event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
+        }
+    };
     state = {
         controls:{
             state:{

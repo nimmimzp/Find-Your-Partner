@@ -1,11 +1,10 @@
 import { AsyncStorage } from 'react-native';
 import { Navigation } from "react-native-navigation";
-import { TRY_AUTH, AUTH_SET_TOKEN, AUTH_SET_USERID, SET_USER_INFO } from './actionTypes';
+import {AUTH_REMOVE_TOKEN, TRY_AUTH, AUTH_SET_TOKEN, AUTH_SET_USERID, SET_USER_INFO } from './actionTypes';
 import {uiStartLoading,uiStopLoading} from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs';
 import * as firebase from 'firebase';
-
-
+import App from "../../../App";
 const firebaseConfig = {
     apiKey: "AIzaSyBhUyFsb_fRSct-Aw_plWtNxOfWCY4XPig",
     authDomain: "react-native-1536905661123.firebaseapp.com",
@@ -218,7 +217,7 @@ export const authAutoSignedIn = ()  => {
 export const authClearStorage = () => {
     return dispatch => {
         AsyncStorage.removeItem("fyp:auth:token");
-        AsyncStorage.removeItem("fyp:auth:expiryDate");;
+        return AsyncStorage.removeItem("fyp:auth:expiryDate");
     }
 };
 
@@ -261,3 +260,22 @@ export const authSetLoginUser = loginUserData =>{
         loginUserInfo: loginUserData
     }
 };
+
+
+export const authLogout = () => {
+    return dispatch => {
+        console.log('hjdhf')
+        dispatch(authClearStorage())
+            .then(() => {
+                App();
+            })
+        dispatch(authRemoveToken())
+    };
+};
+
+
+export const authRemoveToken = () => {
+    return {
+        type : AUTH_REMOVE_TOKEN
+    }
+};;

@@ -19,12 +19,23 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { updateUser } from "../../store/actions/index";
 
 class ProfileScreen extends Component{
-    
+    static navigatorStyle = {
+        navBarButtonColor: "orange"
+    };
 	constructor(props) {
         super(props);
-       
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     
+    onNavigatorEvent = event => {
+        if (event.type === "NavBarButtonPress") {
+            if (event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
+        }
+    };
     state = {
 		viewMode: "portrait",
         gender:[
@@ -113,9 +124,7 @@ class ProfileScreen extends Component{
 	}
 
     selectRadionButtonHandler = (data) => {
-        
         data[1].value = 1;
-        console.log(data)
         this.setState((prevState,data) =>{
             return {
                 ...prevState,
@@ -142,7 +151,6 @@ class ProfileScreen extends Component{
     addBasicInfoOfUser = () =>{
         if (this.state.controls.firstName.value.trim() !== "") {
             let gender = (this.state.gender[0].selected)?this.state.gender[0].value:this.state.gender[1].value;
-            console.log(gender)
             let userData = 
             {
                 firstName:this.state.controls.firstName.value,
@@ -160,15 +168,13 @@ class ProfileScreen extends Component{
     }
     render(){
         let selectedButton = this.state.gender.find(e => e.selected == true);
-        console.log(selectedButton);
-        console.log(selectedButton.value)
-        //selectedButton = selectedButton ? selectedButton.value : this.state.gender[0].label;
+        
+        
         let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
-        //console.log(this.state.gender[0].value)
-        //console.log(this.state.gender[1].value)
+        
         return(
 			<ScrollView>
             

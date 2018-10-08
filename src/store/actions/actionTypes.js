@@ -15,3 +15,5 @@ export const AUTH_LOGIN_USER = "AUTH_LOGIN_USER";
 export const ADD_USER_INFO = "ADD_USER_INFO";
 
 export const SET_USER_INFO = "SET_USER_INFO";
+
+export const AUTH_REMOVE_TOKEN = "AUTH_REMOVE_TOKEN";

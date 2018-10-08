@@ -12,10 +12,14 @@ import { updateUser } from "../../store/actions/index";
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
 
 class ReligionScreen extends Component{
+   
+    static navigatorStyle = {
+        navBarButtonColor: "orange"
+    };
     constructor(props) {
         super(props);
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
-
     state = {
         controls:{
             religion:{
@@ -40,7 +44,15 @@ class ReligionScreen extends Component{
             }
         }
     }
-
+    onNavigatorEvent = event => {
+        if (event.type === "NavBarButtonPress") {
+            if (event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
+        }
+    };
     updateInputState = (key,val) =>{
 		this.setState(prevState => {
 			return {
@@ -57,7 +69,7 @@ class ReligionScreen extends Component{
 		});
     } 
     updateUserInfo = () => {
-        console.log('jhscged')
+
         let userUpdatedData = {
             religion: this.state.controls.religion.value,
             motherTounge: this.state.controls.motherTounge.value,
