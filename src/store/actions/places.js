@@ -96,7 +96,7 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
 
 
 export const getPlaces = (filter) => {
-    console.log(filter)
+    
     return dispatch => {
         dispatch(authGetToken())
             .then(token => {
@@ -110,7 +110,19 @@ export const getPlaces = (filter) => {
                                 image:{
                                     uri:child.val().image
                                 },
-                                key: child.key
+                                birthday: child.val().birthday,
+                                key: child.key,
+                                height:child.val().height,
+                                gender:child.val().gender,
+                                birthday:child.val().birthday,
+                                education:child.val().education,
+                                marriedStatus:child.val().marriedStatus,
+                                state:child.val().state,
+                                city:child.val().city,
+                                pincode:child.val().pincode,
+                                religion: child.val().religion,
+                                motherTounge: child.val().motherTounge,
+                                caste: child.val().caste,
                             })
                         }
                         

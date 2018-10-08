@@ -58,14 +58,17 @@ class FindPlaceScreen extends Component {
   };
 
   itemSelectedHandler = key => {
+    console.log(this.props)
     const selPlace = this.props.places.find(place => {
       return place.key === key;
     });
+
     this.props.navigator.push({
       screen: "awesome-places.PlaceDetailScreen",
       title: selPlace.name,
       passProps: {
-        selectedPlace: selPlace
+        selectedPlace: selPlace,
+        loggedinUser: this.props.userData[0].key
       }
     });
   };

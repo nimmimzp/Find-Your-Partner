@@ -152,7 +152,8 @@ class FirstScreen extends Component{
 	} 
     addBasicInfoOfUser = () =>{
         if (this.state.controls.firstName.value.trim() !== "") {
-            let gender = (this.state.gender[0].selected)?0:1
+            let gender = (this.state.gender[0].selected)?1:0
+            console.log(gender)
             let userData = 
             {
                 firstName:this.state.controls.firstName.value,

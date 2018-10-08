@@ -120,7 +120,7 @@ export const updateProfile = (image,userId) => {
                 })
             })
             .then(parsedRes => {
-                console.log(parsedRes)
+               
                 let imageUrl = parsedRes.url;
                 let userDetail = userRef.orderByChild("userId").equalTo(userId);
                 userDetail.on('value',(snap) =>{
@@ -172,7 +172,6 @@ export const updateProfile = (image,userId) => {
 
 
 export const updateUser = (userData) => {
-    console.log(userData);
     return  dispatch => {   
         dispatch(uiStartLoading());
         dispatch(authGetUserId())
@@ -182,6 +181,21 @@ export const updateUser = (userData) => {
             .then(userId => {
                 firebase.database().ref('users/' + userData.key).update(userData);
                 dispatch(uiStopLoading());
+            })
+    }
+}
+
+export const requestUser = (requestedArray,loggedinUser) => {
+    
+    return dispatch => {
+        dispatch(authGetUserId())
+            .catch(err => {
+                console.log('Userid not found');
+            })
+            .then(userId => {
+                console.log(requestedArray)
+                firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedArray);
+                
             })
     }
 }

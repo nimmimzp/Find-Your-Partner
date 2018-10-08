@@ -12,7 +12,7 @@ import {
 import { connect } from "react-redux";
 
 import Icon from "react-native-vector-icons/Ionicons";
-import { deletePlace } from "../../store/actions/index";
+import { requestUser } from "../../store/actions/index";
 
 class PlaceDetail extends Component {
   state = {
@@ -21,6 +21,7 @@ class PlaceDetail extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props)
     Dimensions.addEventListener("change", this.updateStyles);
   }
 
@@ -34,8 +35,14 @@ class PlaceDetail extends Component {
     });
   };
 
-  placeDeletedHandler = () => {
-    this.props.onDeletePlace(this.props.selectedPlace.key);
+  addUserRequest = () => {
+    //let requstedArray = [];
+    let userDetail = {
+      requestedUser:this.props.selectedPlace.key,
+      status:0
+    }
+    //requstedArray.push(userDetail);
+    this.props.addUserRequest(userDetail,this.props.loggedinUser);
     this.props.navigator.pop();
   };
 
@@ -56,17 +63,15 @@ class PlaceDetail extends Component {
         <View style={styles.subContainer}>
           <View>
             <Text style={styles.placeName}>
-              First Name:{this.props.selectedPlace.firstName}
+              Name:{this.props.selectedPlace.firstName+' '+this.props.selectedPlace.lastName}
             </Text>
-            <Text style={styles.placeName}>
-              Last Name:{this.props.selectedPlace.lastName}
-            </Text>
+            
             <Text style={styles.placeName}>
               Birthday:{this.props.selectedPlace.birthday}
             </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={this.placeDeletedHandler}>
+            <TouchableOpacity onPress={this.addUserRequest}>
               <View style={styles.deleteButton}>
                 <Icon
                   size={30}
@@ -88,7 +93,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     margin: 5,
-    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0
+    paddingTop: ( Platform.OS === 'ios' ) ? 20 : 0,
+    justifyContent:"space-evenly"
   },
   container: {
     margin: 22,
@@ -105,9 +111,9 @@ const styles = StyleSheet.create({
     height: 200
   },
   placeName: {
-    fontWeight: "bold",
+    
     textAlign: "center",
-    fontSize: 28
+    fontSize: 14
   },
   deleteButton: {
     alignItems: "center"
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onDeletePlace: key => dispatch(deletePlace(key))
+    addUserRequest: (requestedArray,loggedinUser) => dispatch(requestUser(requestedArray,loggedinUser))
   };
 };
 
