@@ -8,19 +8,16 @@ import {
   Platform
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import startTabBasedApp from '../MainTabs/startMainTabs';
+import startTab from '../MainTabs/startMainTabs';
+//import {} from "../Interests/SendInterests"
 import {connect} from 'react-redux';
-import {authLogout} from "../../store/actions/index"
+import {authLogout,allRequestUserSent} from "../../store/actions/index"
 class SideDrawer extends Component {
   constructor(props) {
     super(props);
+    rootNavigator = this.props.navigator
   }
-  userProfileHandler = () => {
-    this.props.navigator.push({
-      screen: "awesome-places.SharePlaceScreen"
-      
-    });
-  }
+
   render() {
     return (
       <View
@@ -40,7 +37,7 @@ class SideDrawer extends Component {
               <Text>Profile</Text>
             </View>
           </TouchableOpacity>
-          <TouchableOpacity onPress={this.userProfileHandler}>
+          <TouchableOpacity onPress={this.props.requestSent}>
             <View style={styles.drawerItem}>
               <Icon
                 name={Platform.OS === "android" ? "md-contacts" : "ios-contacts"}
@@ -87,7 +84,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    onLogout : () => dispatch(authLogout())
+    onLogout : () => dispatch(authLogout()),
+    requestSent : () => dispatch(allRequestUserSent())
   }
 }
 

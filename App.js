@@ -8,7 +8,8 @@ import ThirdScreen from './src/screens/ThirdScreen/ThirdScreen';
 import UploadProfile from './src/screens/UploadProfile/UploadProfile';
 import StateScreen from './src/screens/StateScreen/StateScreen';
 import ReligionScreen from './src/screens/ReligionScreen/ReligionScreen';
-//import AllUsers from './src/screens/AllUsers/AllUsers';
+//import {} from './src/screens/Interests/ReciviedInvitations';
+import SendInterestScreen from './src/screens/Interests/SendInterests';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import FindPlaceScreen  from './src/screens/FindPlace/FindPlace';
 import PlaceDetailScreen from "./src/screens/PlaceDetail/PlaceDetail";
@@ -66,6 +67,8 @@ Navigation.registerComponent(
     store,
     Provider
 );
+
+
 Navigation.registerComponent(
     "awesome-places.AuthScreen",
     () => AuthScreen,
@@ -98,7 +101,19 @@ Navigation.registerComponent(
     store,
     Provider
 );
+Navigation.registerComponent(
+    "FYP.SendInterestScreen",
+    () => SendInterestScreen,
+    store,
+    Provider
+);
 
+// Navigation.startSingleScreenApp({
+//     screen: {
+// 		screen: "FYP.SendInterestScreen",
+// 		title: "Login"
+// 	}
+// });
 // Start a App
 Navigation.startSingleScreenApp({
 	screen: {

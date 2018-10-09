@@ -76,10 +76,10 @@ export const tryAuth = (authData,authMode) => {
                                 userId:parsedRes.localId
                             })
                         })
+                        console.log(userData)
                         dispatch(authSetLoginUser(userData));
                         startMainTabs(userData);                            
                     })
-                    //startMainTabs();
                 }
                 
             }
@@ -199,7 +199,7 @@ export const authAutoSignedIn = ()  => {
                                     userId:userId
                                 })
                             })
-                            dispatch(authSetLoginUser(userDetail));
+                            dispatch(authSetLoginUser(userData));
                             dispatch(uiStopLoading());
                             startMainTabs(userData);                            
                         })
@@ -220,6 +220,20 @@ export const authClearStorage = () => {
         return AsyncStorage.removeItem("fyp:auth:expiryDate");
     }
 };
+
+export const authUserKey = () => {
+    return (dispatch,getState) => {
+        const promise = new Promise((resolve,reject)=> {
+            let userId = getState().user.loginUser[0].key;
+            resolve(userId);
+        });
+        promise.catch(err =>{
+            dispatch(authClearStorage())
+        } )
+        return promise;
+    }
+}
+
 
 export const authGetUserId = () => {
     return (dispatch,getState) => {

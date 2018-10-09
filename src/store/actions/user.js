@@ -1,7 +1,7 @@
 import { AsyncStorage } from 'react-native';
 //import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
 import { Navigation } from "react-native-navigation";
-import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId,authSetLoginUser } from './index';
+import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId,authSetLoginUser,authUserKey } from './index';
 import startMainTabs from '../../screens/MainTabs/startMainTabs'
 import * as firebase from 'firebase';
 
@@ -185,17 +185,53 @@ export const updateUser = (userData) => {
     }
 }
 
-export const requestUser = (requestedArray,loggedinUser) => {
-    
+export const requestUser = (requestedToDetail,requestByDetail,loggedinUser) => {
     return dispatch => {
         dispatch(authGetUserId())
             .catch(err => {
                 console.log('Userid not found');
             })
             .then(userId => {
-                console.log(requestedArray)
-                firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedArray);
                 
+                firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedToDetail);
+                firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
             })
+    }
+};
+
+export const allRequestUserSent = () => {
+    return dispatch => {
+        dispatch(authUserKey())
+            .catch(err => {
+                console.log(err)
+            })
+            .then(userKey =>{
+                let userDetail = userRef.child(userKey).child('requestedUserData');
+                userDetail.on('value',(snap) =>{
+                    let requestedUser = [];
+                    snap.forEach((child) => {
+                        let requestedUserKey = child.val().requestedUser;
+                        let requestedUserDetail = userRef.orderByKey().equalTo(requestedUserKey);
+                        requestedUserDetail.on('value',(snap1)=>{
+                            snap1.forEach((child1) => {
+                                requestedUser.push({
+                                    userDetail:child1.val()
+                                })
+                            })
+                            
+                        })
+                    })
+                    Navigation.startSingleScreenApp({
+                        screen: {
+                            screen: "FYP.SendInterestScreen",
+                            title: "All sent request"
+                        },
+                        passProps:{
+                            userId:requestedUser,
+                        }
+                    });
+                })
+            })
+        
     }
 }

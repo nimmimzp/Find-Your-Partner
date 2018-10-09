@@ -13,6 +13,7 @@ import { connect } from "react-redux";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import { requestUser } from "../../store/actions/index";
+import  ButtonWithBackground from '../../components/UI/ButtonWithBackground/ButtonWithBackground';
 
 class PlaceDetail extends Component {
   state = {
@@ -37,12 +38,16 @@ class PlaceDetail extends Component {
 
   addUserRequest = () => {
     //let requstedArray = [];
-    let userDetail = {
+    let requestedToDetail = {
       requestedUser:this.props.selectedPlace.key,
-      status:0
+      status:0,
     }
+     let requestByDetail = {
+       requestByDetailId:this.props.loggedinUser,
+       status:0
+     }
     //requstedArray.push(userDetail);
-    this.props.addUserRequest(userDetail,this.props.loggedinUser);
+    this.props.addUserRequest(requestedToDetail,requestByDetail,this.props.loggedinUser);
     this.props.navigator.pop();
   };
 
@@ -69,9 +74,34 @@ class PlaceDetail extends Component {
             <Text style={styles.placeName}>
               Birthday:{this.props.selectedPlace.birthday}
             </Text>
+            <Text style={styles.placeName}>
+              Height:{this.props.selectedPlace.height}
+            </Text>
+            <Text style={styles.placeName}>
+              Married Status:{this.props.selectedPlace.marriedStatus}
+            </Text>
+            <Text style={styles.placeName}>
+              Education:{this.props.selectedPlace.education}
+            </Text>
+            <Text style={styles.placeName}>
+              State:{this.props.selectedPlace.state}
+            </Text>
+            <Text style={styles.placeName}>
+              City:{this.props.selectedPlace.city}
+            </Text>
+            <Text style={styles.placeName}>
+              Religion:{this.props.selectedPlace.religion}
+            </Text>
+            <Text style={styles.placeName}>
+              Caste:{this.props.selectedPlace.caste}
+            </Text>
+            <Text style={styles.placeName}>
+              Mother Tounge:{this.props.selectedPlace.motherTounge}
+            </Text>
           </View>
           <View>
-            <TouchableOpacity onPress={this.addUserRequest}>
+          <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>Send Intrest</ButtonWithBackground>
+            {/* <TouchableOpacity onPress={this.addUserRequest}>
               <View style={styles.deleteButton}>
                 <Icon
                   size={30}
@@ -79,7 +109,7 @@ class PlaceDetail extends Component {
                   color="orange"
                 />
               </View>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
           </View>
         </View>
       </View>
@@ -125,7 +155,7 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return {
-    addUserRequest: (requestedArray,loggedinUser) => dispatch(requestUser(requestedArray,loggedinUser))
+    addUserRequest: (requestedToDetail,requestByDetail,loggedinUser) => dispatch(requestUser(requestedToDetail,requestByDetail,loggedinUser))
   };
 };
 

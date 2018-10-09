@@ -74,7 +74,7 @@ const startTabs = (props) => {
             ],
             tabsStyle: {
                 tabBarSelectedButtonColor: "orange",
-                initialTabIndex:2,
+                initialTabIndex:0,
             },
             drawer: {
                 left: {
