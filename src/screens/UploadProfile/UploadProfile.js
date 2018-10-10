@@ -8,6 +8,7 @@ import ButtonWithBackground from "../../components/UI/ButtonWithBackground/Butto
 class UploadProfile extends Component {
     constructor(props) {
         super(props);
+        console.ignoredYellowBox = ['Setting a timer' ];
     }
 
     state = {

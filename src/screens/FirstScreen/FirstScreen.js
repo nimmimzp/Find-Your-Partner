@@ -20,7 +20,7 @@ class FirstScreen extends Component{
 
     constructor(props) {
         super(props);
-       
+        console.ignoredYellowBox = ['Setting a timer' ];
     }
     
     state = {

@@ -13,6 +13,7 @@ import ButtonWithBackground from "../../components/UI/ButtonWithBackground/Butto
 class ThirdScreen extends Component{
     constructor(props) {
         super(props);
+        console.ignoredYellowBox = ['Setting a timer' ];
     }
 
     state = {

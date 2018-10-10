@@ -123,10 +123,12 @@ export const getPlaces = (filter) => {
                                 religion: child.val().religion,
                                 motherTounge: child.val().motherTounge,
                                 caste: child.val().caste,
+                                requestId:""
                             })
                         }
                         
                     })
+                    
                     dispatch(setPlaces(userData));
                 })
             })

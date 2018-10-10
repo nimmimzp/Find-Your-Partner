@@ -92,3 +92,61 @@ const startTabs = (props) => {
 };
 
 export default startTabs;
+
+export const friendsTabs = (props,receivedRequestUserDetail,authUserKey) =>{
+    Promise.all([
+        Icon.getImageSource(Platform.OS === 'android' ? "md-people" : "ios-people", 30),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-contact" : "ios-contact", 30),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-menu" : "ios-menu", 30)
+    ]).then(sources => {
+        Navigation.startTabBasedApp({
+            tabs: [
+                
+                {
+                    screen: "FYP.SendInterestScreen",
+                    label: "Your Intrest",
+                    title: "Your Intrest",
+                    icon: sources[1],
+                    navigatorButtons: {
+                        leftButtons: [
+                            {
+                                icon: sources[2],
+                                title: "Menu",
+                                id: "sideDrawerToggle"
+                            }
+                        ]
+                    }
+                },
+                
+                {
+                    screen: "FYP.ReceiveRequestScreen",
+                    label: "Recivied Request",
+                    title: "Recived Request",
+                    icon: sources[0],
+                    navigatorButtons: {
+                        leftButtons: [
+                            {
+                                icon: sources[2],
+                                title: "Menu",
+                                id: "sideDrawerToggle"
+                            }
+                        ]
+                    }
+                }
+            ],
+            tabsStyle: {
+                tabBarSelectedButtonColor: "orange",
+                initialTabIndex:0,
+            },
+            
+            appStyle: {
+                tabBarSelectedButtonColor: "orange"
+            },
+            passProps:{
+                places:props,
+                receivedRequest:receivedRequestUserDetail,
+                authUserKey:authUserKey
+            }
+        });
+    });
+}

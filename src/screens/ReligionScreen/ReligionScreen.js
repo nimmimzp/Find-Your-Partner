@@ -18,6 +18,7 @@ class ReligionScreen extends Component{
     };
     constructor(props) {
         super(props);
+        console.ignoredYellowBox = ['Setting a timer' ];
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
     state = {

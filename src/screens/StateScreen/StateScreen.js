@@ -14,6 +14,7 @@ class StateScreen extends Component{
     constructor(props) {
         super(props);
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
+        console.ignoredYellowBox = ['Setting a timer' ];
     }
     onNavigatorEvent = event => {
         if (event.type === "NavBarButtonPress") {

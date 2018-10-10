@@ -58,6 +58,7 @@ class AuthScreen extends Component {
   constructor(props) {
     super(props);
     Dimensions.addEventListener("change", this.updateStyles);
+    console.ignoredYellowBox = ['Setting a timer' ];
   }
 
   componentWillUnmount() {
@@ -65,12 +66,7 @@ class AuthScreen extends Component {
   }
 
   componentDidMount(){
-  //   Navigation.startSingleScreenApp({
-  //     screen: {
-  //         screen: "FYP.FirstScreen",
-  //         title: "Add Your Basic Info"
-  //     }
-  // });
+
    this.props.onAutoSingin();
   }
 

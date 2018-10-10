@@ -7,9 +7,9 @@ import {
   Animated
 } from "react-native";
 import { connect } from "react-redux";
-import { getPlaces } from "../../store/actions/index";
+import { getPlaces,requestUser } from "../../store/actions/index";
 import PlaceList from "../../components/PlaceList/PlaceList";
-
+//import {  } from "../../store/actions/index";
 class FindPlaceScreen extends Component {
   static navigatorStyle = {
     navBarButtonColor: "orange"
@@ -23,6 +23,7 @@ class FindPlaceScreen extends Component {
 
   constructor(props) {
     super(props);
+    console.ignoredYellowBox = ['Setting a timer' ];
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }
 
@@ -68,7 +69,9 @@ class FindPlaceScreen extends Component {
       title: selPlace.name,
       passProps: {
         selectedPlace: selPlace,
-        loggedinUser: this.props.userData[0].key
+        loggedinUser: this.props.userData[0].key,
+        buttonText:"Send Request",
+        addUserRequest:this.props.addUserRequest
       }
     });
   };
@@ -82,7 +85,7 @@ class FindPlaceScreen extends Component {
   }
 
   render() {
-  
+    
     let content = (
       <Animated.View
         style={{
@@ -147,7 +150,8 @@ const styles = StyleSheet.create({
 
 const mapDispatchToProps = dispatch => {
   return{
-    onLoadPlaces: (userData) => dispatch(getPlaces(userData))
+    onLoadPlaces: (userData) => dispatch(getPlaces(userData)),
+    addUserRequest: (requestedToDetail,requestByDetail,loggedinUser) => dispatch(requestUser(requestedToDetail,requestByDetail,loggedinUser))
   }
 }
 

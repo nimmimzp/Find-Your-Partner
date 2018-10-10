@@ -15,7 +15,8 @@ import {authLogout,allRequestUserSent} from "../../store/actions/index"
 class SideDrawer extends Component {
   constructor(props) {
     super(props);
-    rootNavigator = this.props.navigator
+    console.ignoredYellowBox = ['Setting a timer' ];
+    
   }
 
   render() {

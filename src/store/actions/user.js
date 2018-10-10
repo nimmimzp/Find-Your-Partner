@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 //import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
 import { Navigation } from "react-native-navigation";
 import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId,authSetLoginUser,authUserKey } from './index';
-import startMainTabs from '../../screens/MainTabs/startMainTabs'
+import startMainTabs,{friendsTabs} from '../../screens/MainTabs/startMainTabs'
 import * as firebase from 'firebase';
 
 
@@ -192,7 +192,6 @@ export const requestUser = (requestedToDetail,requestByDetail,loggedinUser) => {
                 console.log('Userid not found');
             })
             .then(userId => {
-                
                 firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedToDetail);
                 firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
             })
@@ -200,38 +199,124 @@ export const requestUser = (requestedToDetail,requestByDetail,loggedinUser) => {
 };
 
 export const allRequestUserSent = () => {
+    let authLoggedInUserKey = "";
     return dispatch => {
         dispatch(authUserKey())
             .catch(err => {
                 console.log(err)
             })
             .then(userKey =>{
+                authLoggedInUserKey = userKey;
+                let requestedUser = [];
+                let receivedRequestUserDetail = [];
+                //This code get data form the user to whom loggedin user send request
                 let userDetail = userRef.child(userKey).child('requestedUserData');
                 userDetail.on('value',(snap) =>{
-                    let requestedUser = [];
+                    
                     snap.forEach((child) => {
                         let requestedUserKey = child.val().requestedUser;
                         let requestedUserDetail = userRef.orderByKey().equalTo(requestedUserKey);
                         requestedUserDetail.on('value',(snap1)=>{
                             snap1.forEach((child1) => {
                                 requestedUser.push({
-                                    userDetail:child1.val()
+                                    firstName: child1.val().firstName,
+                                    lastName: child1.val().lastName,
+                                    image:{
+                                        uri:child1.val().image
+                                    },
+                                    birthday: child1.val().birthday,
+                                    key: child1.key,
+                                    height:child1.val().height,
+                                    gender:child1.val().gender,
+                                    birthday:child1.val().birthday,
+                                    education:child1.val().education,
+                                    marriedStatus:child1.val().marriedStatus,
+                                    state:child1.val().state,
+                                    city:child1.val().city,
+                                    pincode:child1.val().pincode,
+                                    religion: child1.val().religion,
+                                    motherTounge: child1.val().motherTounge,
+                                    caste: child1.val().caste,
+                                    requestId:child.key
                                 })
                             })
                             
                         })
-                    })
-                    Navigation.startSingleScreenApp({
-                        screen: {
-                            screen: "FYP.SendInterestScreen",
-                            title: "All sent request"
-                        },
-                        passProps:{
-                            userId:requestedUser,
+                    })                    
+                })
+                //End here
+
+                //User Received request 
+
+                let userReceiveDetail = userRef.child(userKey).child('requestedByUserData');
+                userReceiveDetail.on('value',(snap) =>{
+                    
+                    snap.forEach((child) => {
+                        let receivedUserKey = child.val().requestedById;
+                        let receivedUserDetail = userRef.orderByKey().equalTo(receivedUserKey);
+                        receivedUserDetail.on('value',(snap1)=>{
+                            snap1.forEach((child1) => {
+                                receivedRequestUserDetail.push({
+                                    firstName: child1.val().firstName,
+                                    lastName: child1.val().lastName,
+                                    image:{
+                                        uri:child1.val().image
+                                    },
+                                    birthday: child1.val().birthday,
+                                    key: child1.key,
+                                    height:child1.val().height,
+                                    gender:child1.val().gender,
+                                    birthday:child1.val().birthday,
+                                    education:child1.val().education,
+                                    marriedStatus:child1.val().marriedStatus,
+                                    state:child1.val().state,
+                                    city:child1.val().city,
+                                    pincode:child1.val().pincode,
+                                    religion: child1.val().religion,
+                                    motherTounge: child1.val().motherTounge,
+                                    caste: child1.val().caste,
+                                    requestId:child.key
+                                })
+                            })
+                            
+                        })
+                    })                    
+                })
+                //console.log(receivedRequestUserDetail)
+                //End here
+                friendsTabs(requestedUser,receivedRequestUserDetail,authLoggedInUserKey);
+            })
+        
+    }
+};
+
+export const cancelIntrestRequest = (requestedToDetail,requestByDetail,loggedinUser) =>{
+    console.log("requestedToDetail",requestedToDetail.requestedUser)
+    firebase.database().ref('users/' + loggedinUser +'/requestedUserData/'+requestedToDetail.requestedId).remove();
+    return dispatch => {
+        
+        dispatch(authUserKey())
+            .catch(err => {
+                console.log('udfhudgyrdu')
+                console.log(err)
+            })
+            .then (authUserKeyID => {
+                let requestUserID = requestedToDetail.requestedUser;
+                console.log(requestUserID);
+                let userDetail = userRef.child(requestUserID).child('requestedByUserData'); userDetail.on('value',(snap) =>{
+                    let requestedUser = [];
+                    snap.forEach((child) => {
+                        if(child.val().requestById===loggedinUser){
+                            firebase.database().ref('users/' + requestUserID +'/requestedByUserData/'+child.key).remove();
                         }
-                    });
+                        
+                    })
                 })
             })
         
     }
+}
+
+export const allRequestUserReceive = () => {
+    console.log('hiii')
 }

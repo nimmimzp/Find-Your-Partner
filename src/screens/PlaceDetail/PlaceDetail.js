@@ -3,7 +3,7 @@ import {
   View,
   Image,
   Text,
-  Button,
+  ScrollView,
   StyleSheet,
   TouchableOpacity,
   Platform,
@@ -22,7 +22,7 @@ class PlaceDetail extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props)
+    console.ignoredYellowBox = ['Setting a timer' ];
     Dimensions.addEventListener("change", this.updateStyles);
   }
 
@@ -41,19 +41,30 @@ class PlaceDetail extends Component {
     let requestedToDetail = {
       requestedUser:this.props.selectedPlace.key,
       status:0,
+      requestedId:this.props.selectedPlace.requestId
     }
      let requestByDetail = {
-       requestByDetailId:this.props.loggedinUser,
+       requestedById:this.props.loggedinUser,
        status:0
      }
-    //requstedArray.push(userDetail);
+    
     this.props.addUserRequest(requestedToDetail,requestByDetail,this.props.loggedinUser);
     this.props.navigator.pop();
   };
 
   render() {
+    let manageRequest =  <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>{this.props.buttonText}</ButtonWithBackground>
+    let acceptButton ;//;= <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>{this.props.buttonText}</ButtonWithBackground>
+    let xyz = "";
+    console.log(this.props.buttonText)
+    if(this.props.buttonText === 'Accept Request'){
+      
+      //manageRequest = <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>Cancel</ButtonWithBackground>
+      //acceptButton = <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>{this.props.buttonText}</ButtonWithBackground>
+    }
+    
     return (
-      <View
+      <ScrollView
         style={[
           styles.container,
           this.state.viewMode === "portrait"
@@ -99,20 +110,12 @@ class PlaceDetail extends Component {
               Mother Tounge:{this.props.selectedPlace.motherTounge}
             </Text>
           </View>
+         
           <View>
-          <ButtonWithBackground  color="#29aaf4" onPress={this.addUserRequest}>Send Intrest</ButtonWithBackground>
-            {/* <TouchableOpacity onPress={this.addUserRequest}>
-              <View style={styles.deleteButton}>
-                <Icon
-                  size={30}
-                  name={Platform.OS === "android" ? "md-person-add" : "ios-person-add"}
-                  color="orange"
-                />
-              </View>
-            </TouchableOpacity> */}
+            {manageRequest}{acceptButton}
           </View>
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -153,10 +156,6 @@ const styles = StyleSheet.create({
   }
 });
 
-const mapDispatchToProps = dispatch => {
-  return {
-    addUserRequest: (requestedToDetail,requestByDetail,loggedinUser) => dispatch(requestUser(requestedToDetail,requestByDetail,loggedinUser))
-  };
-};
 
-export default connect(null, mapDispatchToProps)(PlaceDetail);
+
+export default (PlaceDetail);
