@@ -71,7 +71,7 @@ class FindPlaceScreen extends Component {
         selectedPlace: selPlace,
         loggedinUser: this.props.userData[0].key,
         buttonText:"Send Request",
-        addUserRequest:this.props.addUserRequest
+        manageUserRequest:this.props.addUserRequest
       }
     });
   };

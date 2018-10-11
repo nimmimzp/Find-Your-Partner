@@ -20,13 +20,13 @@ class SendInterestScreen extends Component {
                 selectedPlace: selPlace,
                 loggedinUser: this.props.authUserKey,
                 buttonText:"Cancel Request",
-                addUserRequest:this.cancelRequest
+                manageUserRequest:this.cancelRequest
             }
         });
     }
 
     cancelRequest = (requestedToDetail,requestByDetail,loggedinUser) => {
-        this.props.cancelUserRequest(requestedToDetail,requestByDetail,loggedinUser)
+        this.props.cancelUserRequest(requestedToDetail,loggedinUser)
     }
     render () {
         return <PlaceList
@@ -38,7 +38,7 @@ class SendInterestScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return{
-        cancelUserRequest: (requestedToDetail,requestByDetail,loggedinUser) => dispatch(cancelIntrestRequest(requestedToDetail,requestByDetail,loggedinUser))
+        cancelUserRequest: (requestedToDetail,loggedinUser) => dispatch(cancelIntrestRequest(requestedToDetail,loggedinUser))
     }
 }
   

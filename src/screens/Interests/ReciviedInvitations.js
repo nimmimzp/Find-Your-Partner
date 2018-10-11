@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import PlaceList from "../../components/PlaceList/PlaceList";
-import {cancelIntrestRequest} from '../../store/actions/index';
+import {cancelReceivedRequest,acceptUserRequest} from '../../store/actions/index';
 class ReceiveRequestScreen extends Component {
     constructor(props) {
 		super(props);
@@ -20,13 +20,17 @@ class ReceiveRequestScreen extends Component {
                 selectedPlace: selUser,
                 loggedinUser: this.props.authUserKey,
                 buttonText:"Accept Request",
-                addUserRequest:this.cancelRequest
+                cancelRequest:this.cancelRequest,
+                acceptRequest:this.acceptRequest
             }
         });
     }
 
-    cancelRequest = (requestedToDetail,requestByDetail,loggedinUser) => {
-        this.props.cancelUserRequest(requestedToDetail,requestByDetail,loggedinUser)
+    cancelRequest = (receivedByDetail,loggedinUser) => {
+        this.props.cancelUserRequest(receivedByDetail,loggedinUser)
+    }
+    acceptRequest = (receivedByDetail,loggedinUser) => {
+        this.props.acceptUserRequest(receivedByDetail,loggedinUser);
     }
     render () {
         return <PlaceList
@@ -38,7 +42,8 @@ class ReceiveRequestScreen extends Component {
 
 const mapDispatchToProps = dispatch => {
     return{
-        cancelUserRequest: (requestedToDetail,requestByDetail,loggedinUser) => dispatch(cancelIntrestRequest(requestedToDetail,requestByDetail,loggedinUser))
+        cancelUserRequest: (receivedByDetail,loggedinUser) => dispatch(cancelReceivedRequest(receivedByDetail,loggedinUser)),
+        acceptUserRequest: (receivedByDetail,loggedinUser) => dispatch(acceptUserRequest(receivedByDetail,loggedinUser))
     }
 }
   

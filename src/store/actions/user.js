@@ -192,14 +192,35 @@ export const requestUser = (requestedToDetail,requestByDetail,loggedinUser) => {
                 console.log('Userid not found');
             })
             .then(userId => {
-                firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedToDetail);
-                firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
+
+                var newPostKey1 = firebase.database().ref('users/' + loggedinUser +'/requestedUserData').push().key;
+                var updates1 = {};
+                updates1['users/' + loggedinUser +'/requestedUserData/'+newPostKey1] = requestedToDetail
+                firebase.database().ref().update(updates1);
+
+
+
+                var newPostKey2 = firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData').push().key;
+                var updates2 = {};
+                updates2['users/' + requestedToDetail.requestedUser +'/requestedByUserData/'+newPostKey2] = requestByDetail
+                firebase.database().ref().update(updates2);
+                // // Write the new poll's data simultaneously in the polls list and the user's poll list.
+                // updates['/polls/' + newPostKey] = req.body;
+            
+                // //firebase.database().ref().update(updates);
+
+                // firebase.database().ref().update(updates);  
+
+
+
+               // firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedToDetail);
+               // firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
             })
     }
 };
 
 export const allRequestUserSent = () => {
-    let authLoggedInUserKey = "";
+    let authLoggedInUserKey;
     return dispatch => {
         dispatch(authUserKey())
             .catch(err => {
@@ -275,7 +296,7 @@ export const allRequestUserSent = () => {
                                     religion: child1.val().religion,
                                     motherTounge: child1.val().motherTounge,
                                     caste: child1.val().caste,
-                                    requestId:child.key
+                                    requestedById:child.key
                                 })
                             })
                             
@@ -290,23 +311,25 @@ export const allRequestUserSent = () => {
     }
 };
 
-export const cancelIntrestRequest = (requestedToDetail,requestByDetail,loggedinUser) =>{
-    console.log("requestedToDetail",requestedToDetail.requestedUser)
-    firebase.database().ref('users/' + loggedinUser +'/requestedUserData/'+requestedToDetail.requestedId).remove();
+export const cancelIntrestRequest = (requestedToDetail,userId) =>{
+    firebase.database().ref('users/' + userId +'/requestedUserData/'+requestedToDetail.requestedId).remove();
+    
     return dispatch => {
         
         dispatch(authUserKey())
             .catch(err => {
-                console.log('udfhudgyrdu')
                 console.log(err)
             })
             .then (authUserKeyID => {
                 let requestUserID = requestedToDetail.requestedUser;
-                console.log(requestUserID);
-                let userDetail = userRef.child(requestUserID).child('requestedByUserData'); userDetail.on('value',(snap) =>{
-                    let requestedUser = [];
+                
+                let userDetail = userRef.child(requestUserID).child('requestedByUserData'); 
+                userDetail.on('value',(snap) =>{
+                   
                     snap.forEach((child) => {
-                        if(child.val().requestById===loggedinUser){
+                       
+                        if(child.val().requestedById===userId){
+                          
                             firebase.database().ref('users/' + requestUserID +'/requestedByUserData/'+child.key).remove();
                         }
                         
@@ -317,6 +340,66 @@ export const cancelIntrestRequest = (requestedToDetail,requestByDetail,loggedinU
     }
 }
 
-export const allRequestUserReceive = () => {
-    console.log('hiii')
+
+export const cancelReceivedRequest = (receivedByDetail,userId) => {
+    
+    firebase.database().ref('users/' + userId +'/requestedByUserData/'+receivedByDetail.requestedById).remove();
+    return dispatch => {
+        
+        dispatch(authUserKey())
+            .catch(err => {
+                console.log(err)
+            })
+            .then (authUserKeyID => {
+                let sentByUserID = receivedByDetail.sentBy;
+                
+                let userDetail = userRef.child(sentByUserID).child('requestedUserData'); 
+                userDetail.on('value',(snap) =>{
+                    
+                    snap.forEach((child) => {
+                        if(child.val().requestedUser===userId){
+                            firebase.database().ref('users/' + sentByUserID +'/requestedByUserData/'+child.key).remove();
+                        }
+                        
+                    })
+                })
+            })
+        
+    }
+}
+
+export const acceptUserRequest = (receivedByDetail,userId) => {
+    return dispatch => {
+        dispatch(authGetUserId())
+            .catch(err => {
+                console.log('Userid not found');
+            })
+            .then(authuserId => {
+                let sentByUserId = receivedByDetail.sentBy;
+                console.log(sentByUserId)
+                let friendDetail = {
+                    friend:receivedByDetail.sentBy
+                }
+                let friendDetail1 = {
+                    friend:userId
+                }
+                
+                var newPostKey1 = firebase.database().ref('users/' + userId +'/friendList').push().key;
+                var updates1 = {};
+                updates1['users/' + userId +'/friendList/'+newPostKey1] = friendDetail
+                firebase.database().ref().update(updates1);
+
+
+                var newPostKey2 = firebase.database().ref('users/' + sentByUserId +'/friendList').push().key;
+                var updates2 = {};
+                updates2['users/' + sentByUserId +'/friendList/'+newPostKey2] = friendDetail1
+                firebase.database().ref().update(updates2);
+                 
+                //firebase.database().ref('users/' + userId +'/friendList').push(friendDetail) ;
+                //firebase.database().ref('users/' + sentByUserId +'/friendList') .push(friendDetail1);
+                dispatch(cancelReceivedRequest(receivedByDetail,userId))
+                
+               // firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
+            })
+    }
 }

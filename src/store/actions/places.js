@@ -1,6 +1,6 @@
 import { AsyncStorage } from 'react-native';
 import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
-import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId } from './index';
+import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId, authUserKey } from './index';
 import * as firebase from 'firebase';
 
 const firebaseConfig = {
@@ -98,34 +98,54 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
 export const getPlaces = (filter) => {
     
     return dispatch => {
-        dispatch(authGetToken())
-            .then(token => {
+        dispatch(authUserKey())
+            .then(loggedInUserKey => {
                 userRef.on('value',(snap) =>{
                     let userData = [];
                     snap.forEach((child) => {
-                        if((filter.userId !== child.val().userId) && (filter.userGender !== child.val().gender)){
-                            userData.push({
-                                firstName: child.val().firstName,
-                                lastName: child.val().lastName,
-                                image:{
-                                    uri:child.val().image
-                                },
-                                birthday: child.val().birthday,
-                                key: child.key,
-                                height:child.val().height,
-                                gender:child.val().gender,
-                                birthday:child.val().birthday,
-                                education:child.val().education,
-                                marriedStatus:child.val().marriedStatus,
-                                state:child.val().state,
-                                city:child.val().city,
-                                pincode:child.val().pincode,
-                                religion: child.val().religion,
-                                motherTounge: child.val().motherTounge,
-                                caste: child.val().caste,
-                                requestId:""
+                       
+                        //if((filter.userId !== child.val().userId) && (filter.userGender !== child.val().gender)){
+                            let userFriend = userRef.child(loggedInUserKey).child('friendList');
+                            userFriend.on('value',(friendSnap) =>{
+                                friendSnap.forEach((friendChild) => {
+                                    console.log("friendChild=======>",friendChild.val().friend)
+                                    let userSendRequest = userRef.child(loggedInUserKey).child('requestedUserData');
+                                    userSendRequest.on('value',(sendRequestSnap) =>{
+                                        sendRequestSnap.forEach((sendRequestChild)=>{
+                                            console.log("sendRequestChild=======>",sendRequestChild.val().requestedUser)
+                                            let userReceiveRequest = userRef.child(loggedInUserKey).child('requestedByUserData');
+                                            userReceiveRequest.on('value',(receiveRequestSnap) =>{
+                                                receiveRequestSnap.forEach((receiveRequestChild)=>{
+                                                    console.log("receiveRequestChild=======>",receiveRequestChild.val().requestedById)
+                                                })
+                                            })
+                                        })
+                                    })
+
+                                })
                             })
-                        }
+                            // userData.push({
+                            //     firstName: child.val().firstName,
+                            //     lastName: child.val().lastName,
+                            //     image:{
+                            //         uri:child.val().image
+                            //     },
+                            //     birthday: child.val().birthday,
+                            //     key: child.key,
+                            //     height:child.val().height,
+                            //     gender:child.val().gender,
+                            //     birthday:child.val().birthday,
+                            //     education:child.val().education,
+                            //     marriedStatus:child.val().marriedStatus,
+                            //     state:child.val().state,
+                            //     city:child.val().city,
+                            //     pincode:child.val().pincode,
+                            //     religion: child.val().religion,
+                            //     motherTounge: child.val().motherTounge,
+                            //     caste: child.val().caste,
+                            //     requestId:""
+                            // })
+                        //}
                         
                     })
                     
