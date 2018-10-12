@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import startTab from '../MainTabs/startMainTabs';
 //import {} from "../Interests/SendInterests"
 import {connect} from 'react-redux';
-import {authLogout,allRequestUserSent} from "../../store/actions/index"
+import {authLogout,allRequestUserSent,getBackToUserProfile} from "../../store/actions/index"
 class SideDrawer extends Component {
   constructor(props) {
     super(props);
@@ -27,7 +27,7 @@ class SideDrawer extends Component {
           { width: Dimensions.get("window").width * 0.8 }
         ]}
       >
-        <TouchableOpacity >
+        <TouchableOpacity onPress={this.props.backToProfile}>
           <View style={styles.drawerItem}>
               <Icon
                 name={Platform.OS === "android" ? "md-contact" : "ios-contact"}
@@ -86,7 +86,8 @@ const styles = StyleSheet.create({
 const mapDispatchToProps = dispatch => {
   return {
     onLogout : () => dispatch(authLogout()),
-    requestSent : () => dispatch(allRequestUserSent())
+    requestSent : () => dispatch(allRequestUserSent()),
+    backToProfile : () => dispatch(getBackToUserProfile())
   }
 }
 

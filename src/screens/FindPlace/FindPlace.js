@@ -9,7 +9,7 @@ import {
 import { connect } from "react-redux";
 import { getPlaces,requestUser } from "../../store/actions/index";
 import PlaceList from "../../components/PlaceList/PlaceList";
-//import {  } from "../../store/actions/index";
+
 class FindPlaceScreen extends Component {
   static navigatorStyle = {
     navBarButtonColor: "orange"
@@ -23,6 +23,7 @@ class FindPlaceScreen extends Component {
 
   constructor(props) {
     super(props);
+    console.log(props.places)
     console.ignoredYellowBox = ['Setting a timer' ];
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }

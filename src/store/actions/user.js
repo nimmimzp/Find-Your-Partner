@@ -109,7 +109,8 @@ export const updateProfile = (image,userId) => {
             })
             .then(token => {
                 authToken = token;
-                return fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeUserImage",{
+                
+                return fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeImage",{
                     method:"POST",
                     body:JSON.stringify({
                         image:image.base64
@@ -118,9 +119,23 @@ export const updateProfile = (image,userId) => {
                         "Authorization": "Bearer " + token
                     }
                 })
+                // fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeImage",{
+                //     method:"POST",
+                //     body:JSON.stringify({
+                //         image:image.base64
+                //     }),
+                //     headers:{
+                //         "Authorization": "Bearer " + token
+                //     }
+                // })
+                // .catch(err => console.log(err))
+                // .then(res=>parsedRes)
+                // .then(parsedRes => {
+                //     console.log(parsedRes)
+                // })
             })
             .then(parsedRes => {
-               
+                console.log(parsedRes)
                 let imageUrl = parsedRes.url;
                 let userDetail = userRef.orderByChild("userId").equalTo(userId);
                 userDetail.on('value',(snap) =>{
@@ -165,7 +180,7 @@ export const updateProfile = (image,userId) => {
                     dispatch(authSetLoginUser(userData));
                     startMainTabs(userData);
                 })
-            })
+           })
     }
 };
 
@@ -204,17 +219,6 @@ export const requestUser = (requestedToDetail,requestByDetail,loggedinUser) => {
                 var updates2 = {};
                 updates2['users/' + requestedToDetail.requestedUser +'/requestedByUserData/'+newPostKey2] = requestByDetail
                 firebase.database().ref().update(updates2);
-                // // Write the new poll's data simultaneously in the polls list and the user's poll list.
-                // updates['/polls/' + newPostKey] = req.body;
-            
-                // //firebase.database().ref().update(updates);
-
-                // firebase.database().ref().update(updates);  
-
-
-
-               // firebase.database().ref('users/' + loggedinUser +'/requestedUserData') .push(requestedToDetail);
-               // firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
             })
     }
 };
@@ -230,6 +234,7 @@ export const allRequestUserSent = () => {
                 authLoggedInUserKey = userKey;
                 let requestedUser = [];
                 let receivedRequestUserDetail = [];
+                let allYourMatched = [];
                 //This code get data form the user to whom loggedin user send request
                 let userDetail = userRef.child(userKey).child('requestedUserData');
                 userDetail.on('value',(snap) =>{
@@ -272,8 +277,8 @@ export const allRequestUserSent = () => {
                 let userReceiveDetail = userRef.child(userKey).child('requestedByUserData');
                 userReceiveDetail.on('value',(snap) =>{
                     
-                    snap.forEach((child) => {
-                        let receivedUserKey = child.val().requestedById;
+                    snap.forEach((receivedChild) => {
+                        let receivedUserKey = receivedChild.val().requestedById;
                         let receivedUserDetail = userRef.orderByKey().equalTo(receivedUserKey);
                         receivedUserDetail.on('value',(snap1)=>{
                             snap1.forEach((child1) => {
@@ -305,7 +310,43 @@ export const allRequestUserSent = () => {
                 })
                 //console.log(receivedRequestUserDetail)
                 //End here
-                friendsTabs(requestedUser,receivedRequestUserDetail,authLoggedInUserKey);
+
+                //all friend of loggedin userhere
+                let userFriendDetail = userRef.child(userKey).child('friendList');
+                userFriendDetail.on('value',(snap) =>{
+                    snap.forEach((friendChild) => {
+                        let friendId = friendChild.val().friend
+                        console.log(friendId)
+                        let friendDetail = userRef.orderByKey().equalTo(friendId);
+                        friendDetail.on('value',(snap2)=>{
+                            snap2.forEach((child2) => {
+                                
+                                allYourMatched.push({
+                                    firstName: child2.val().firstName,
+                                    lastName: child2.val().lastName,
+                                    image:{
+                                        uri:child2.val().image
+                                    },
+                                    birthday: child2.val().birthday,
+                                    phonenumber: child2.val().phonenumber,
+                                    key: child2.key,
+                                    height:child2.val().height,
+                                    gender:child2.val().gender,
+                                    education:child2.val().education,
+                                    marriedStatus:child2.val().marriedStatus,
+                                    state:child2.val().state,
+                                    city:child2.val().city,
+                                    pincode:child2.val().pincode,
+                                    religion: child2.val().religion,
+                                    motherTounge: child2.val().motherTounge,
+                                    caste: child2.val().caste
+                                })
+                            })
+                        })
+                    })
+                    //console.log(allYourMatched)
+                })
+                friendsTabs(requestedUser,receivedRequestUserDetail,allYourMatched,authLoggedInUserKey);
             })
         
     }
@@ -395,11 +436,48 @@ export const acceptUserRequest = (receivedByDetail,userId) => {
                 updates2['users/' + sentByUserId +'/friendList/'+newPostKey2] = friendDetail1
                 firebase.database().ref().update(updates2);
                  
-                //firebase.database().ref('users/' + userId +'/friendList').push(friendDetail) ;
-                //firebase.database().ref('users/' + sentByUserId +'/friendList') .push(friendDetail1);
                 dispatch(cancelReceivedRequest(receivedByDetail,userId))
                 
-               // firebase.database().ref('users/' + requestedToDetail.requestedUser +'/requestedByUserData') .push(requestByDetail);
+               
+            })
+    }
+    
+}
+
+export const getBackToUserProfile = () => {
+    console.l
+    return dispatch =>{
+        dispatch(authUserKey())
+            .catch(err => {
+                console.log("User Key missing");
+            })
+            .then(userKey => {
+                let userDetail = userRef.orderByKey().equalTo(userKey);
+                userDetail.on('value',(snap) =>{
+                    let userData = [];
+                    snap.forEach((child) => {
+                        userData.push({
+                            firstName: child.val().firstName,
+                            lastName: child.val().lastName,
+                            phonenumber:child.val().phonenumber,
+                            height:child.val().height,
+                            gender:child.val().gender,
+                            birthday:child.val().birthday,
+                            education:child.val().education,
+                            marriedStatus:child.val().marriedStatus,
+                            state:child.val().state,
+                            city:child.val().city,
+                            pincode:child.val().pincode,
+                            religion: child.val().religion,
+                            motherTounge: child.val().motherTounge,
+                            caste: child.val().caste,
+                            key: child.key,
+                            userId:child.val().userId
+                        })
+                    })
+                    dispatch(authSetLoginUser(userData));
+                    startMainTabs(userData);                            
+                })
             })
     }
 }

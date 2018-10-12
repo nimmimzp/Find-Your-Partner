@@ -2,7 +2,7 @@ import { AsyncStorage } from 'react-native';
 import { SET_PLACES, REMOVE_PLACE,AUTH_LOGIN_USER } from './actionTypes';
 import { uiStartLoading,uiStopLoading, authGetToken, authGetUserId, authUserKey } from './index';
 import * as firebase from 'firebase';
-
+import _ from 'lodash';
 const firebaseConfig = {
     apiKey: "AIzaSyBhUyFsb_fRSct-Aw_plWtNxOfWCY4XPig",
     authDomain: "react-native-1536905661123.firebaseapp.com",
@@ -102,54 +102,87 @@ export const getPlaces = (filter) => {
             .then(loggedInUserKey => {
                 userRef.on('value',(snap) =>{
                     let userData = [];
+                    let newModifiedData;
+                    let sendRequestData = [];
+                    let receiveRequestData = [];
+                    let remainUserData = [];
                     snap.forEach((child) => {
-                       
-                        //if((filter.userId !== child.val().userId) && (filter.userGender !== child.val().gender)){
-                            let userFriend = userRef.child(loggedInUserKey).child('friendList');
-                            userFriend.on('value',(friendSnap) =>{
-                                friendSnap.forEach((friendChild) => {
-                                    console.log("friendChild=======>",friendChild.val().friend)
-                                    let userSendRequest = userRef.child(loggedInUserKey).child('requestedUserData');
-                                    userSendRequest.on('value',(sendRequestSnap) =>{
-                                        sendRequestSnap.forEach((sendRequestChild)=>{
-                                            console.log("sendRequestChild=======>",sendRequestChild.val().requestedUser)
-                                            let userReceiveRequest = userRef.child(loggedInUserKey).child('requestedByUserData');
-                                            userReceiveRequest.on('value',(receiveRequestSnap) =>{
-                                                receiveRequestSnap.forEach((receiveRequestChild)=>{
-                                                    console.log("receiveRequestChild=======>",receiveRequestChild.val().requestedById)
-                                                })
-                                            })
-                                        })
-                                    })
-
-                                })
-                            })
-                            // userData.push({
-                            //     firstName: child.val().firstName,
-                            //     lastName: child.val().lastName,
-                            //     image:{
-                            //         uri:child.val().image
-                            //     },
-                            //     birthday: child.val().birthday,
-                            //     key: child.key,
-                            //     height:child.val().height,
-                            //     gender:child.val().gender,
-                            //     birthday:child.val().birthday,
-                            //     education:child.val().education,
-                            //     marriedStatus:child.val().marriedStatus,
-                            //     state:child.val().state,
-                            //     city:child.val().city,
-                            //     pincode:child.val().pincode,
-                            //     religion: child.val().religion,
-                            //     motherTounge: child.val().motherTounge,
-                            //     caste: child.val().caste,
-                            //     requestId:""
-                            // })
-                        //}
-                        
+                        userKey = child.key;
+                        if((filter.userId !== child.val().userId) && (filter.userGender !== child.val().gender)){
+                            userData.push({
+                                userKey:child.key, 
+                            })   
+                        }  
+                    })
+                    let userFriend = userRef.child(loggedInUserKey).child('friendList');
+                    userFriend.on('value',(friendSnap) =>{
+                        friendSnap.forEach((friendChild) => {
+                            
+                            for (var friendkey in userData){
+                                if(userData[friendkey].userKey === friendChild.val().friend){
+                                    userData = _.omit(userData,friendkey);
+                                }
+                            }
+                        })
+                    })
+                    console.log(userData)
+                    let userSendRequest = userRef.child(loggedInUserKey).child('requestedUserData');
+                    userSendRequest.on('value',(sendRequestSnap) =>{
+                        sendRequestSnap.forEach((sendRequestChild)=>{
+                            for (var sentRequestkey in userData){
+                                if(userData[sentRequestkey].userKey === sendRequestChild.val().requestedUser){
+                                    userData = _.omit(userData,sentRequestkey);
+                                }
+                            }
+                        })
                     })
                     
-                    dispatch(setPlaces(userData));
+                    let userReceiveRequest = userRef.child(loggedInUserKey).child('requestedByUserData');
+                    userReceiveRequest.on('value',(receiveRequestSnap) =>{
+                        receiveRequestSnap.forEach((receiveRequestChild)=>{
+                            for (var receiveRequestkey in userData){
+                                if(userData[receiveRequestkey].userKey === receiveRequestChild.val().requestedById){
+                                    userData = _.omit(userData,receiveRequestkey);
+                                }
+                            }
+                        })
+                    })
+                    
+                    for (var key in userData){
+                        let remainUser = userRef.orderByKey().equalTo(userData[key].userKey);
+                        remainUser.on('value',(remainUserSnap)=>{
+                            remainUserSnap.forEach((remainUserChild)=>{
+                                remainUserData.push({
+                                    firstName: remainUserChild.val().firstName,
+                                    lastName: remainUserChild.val().lastName,
+                                    image:{
+                                        uri:remainUserChild.val().image
+                                    },
+                                    birthday: remainUserChild.val().birthday,
+                                    key: remainUserChild.key,
+                                    height:remainUserChild.val().height,
+                                    gender:remainUserChild.val().gender,
+                                    birthday:remainUserChild.val().birthday,
+                                    education:remainUserChild.val().education,
+                                    marriedStatus:remainUserChild.val().marriedStatus,
+                                    state:remainUserChild.val().state,
+                                    city:remainUserChild.val().city,
+                                    pincode:remainUserChild.val().pincode,
+                                    religion: remainUserChild.val().religion,
+                                    motherTounge: remainUserChild.val().motherTounge,
+                                    caste: remainUserChild.val().caste,
+                                    requestId:""
+                                })
+                            })
+                        })
+                        //console.log(remainUserData)
+                    }
+                    // console.log(userData)
+                    // let length = userData.length;
+                    // for(let j=0; j<length; j++){
+                    //     let remainUser = userRef.orderByKey().equalTo(userData[j].userKey);
+                    // }
+                    dispatch(setPlaces(remainUserData));
                 })
             })
             .catch(() => {

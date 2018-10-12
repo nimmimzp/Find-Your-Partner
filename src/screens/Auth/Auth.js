@@ -66,8 +66,16 @@ class AuthScreen extends Component {
   }
 
   componentDidMount(){
-
-   this.props.onAutoSingin();
+    Navigation.startSingleScreenApp({
+      screen: {
+          screen: "FYP.UploadProfile",
+          title: "Upload A Profile Picture"
+      },
+      passProps:{
+          userId:'ZMKY7eV0Smb9mggspOhuFZY5EjY2',
+      }
+  });
+  //this.props.onAutoSingin();
   }
 
   switchAuthModeHandler = () => {

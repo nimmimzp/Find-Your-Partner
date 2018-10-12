@@ -1,13 +1,27 @@
 import React, {Component} from 'react';
 import { connect } from "react-redux";
 import PlaceList from "../../components/PlaceList/PlaceList";
+import {Text} from "react-native";
 import {cancelReceivedRequest,acceptUserRequest} from '../../store/actions/index';
 class ReceiveRequestScreen extends Component {
+    static navigatorStyle = {
+        navBarButtonColor: "orange"
+    };
     constructor(props) {
 		super(props);
         console.ignoredYellowBox = ['Setting a timer' ];
-        console.log(props)
+        this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
     }
+
+    onNavigatorEvent = event => {
+        if (event.type === "NavBarButtonPress") {
+            if (event.id === "sideDrawerToggle") {
+                this.props.navigator.toggleDrawer({
+                    side: "left"
+                });
+            }
+        }
+    };
     userSelectedHandler = (key) =>{
         const selUser = this.props.receivedRequest.find(user => {
             return user.key === key;
@@ -33,6 +47,9 @@ class ReceiveRequestScreen extends Component {
         this.props.acceptUserRequest(receivedByDetail,loggedinUser);
     }
     render () {
+        if(this.props.allYourMatched.length == 0){
+            return <Text> No Request get yet</Text>
+        }
         return <PlaceList
         places={this.props.receivedRequest}
         onItemSelected={this.userSelectedHandler}

@@ -93,7 +93,7 @@ const startTabs = (props) => {
 
 export default startTabs;
 
-export const friendsTabs = (props,receivedRequestUserDetail,authUserKey) =>{
+export const friendsTabs = (props,receivedRequestUserDetail,allYourMatched,authUserKey) =>{
     Promise.all([
         Icon.getImageSource(Platform.OS === 'android' ? "md-people" : "ios-people", 30),
         Icon.getImageSource(Platform.OS === 'android' ? "md-contact" : "ios-contact", 30),
@@ -132,20 +132,40 @@ export const friendsTabs = (props,receivedRequestUserDetail,authUserKey) =>{
                             }
                         ]
                     }
+                },
+                {
+                    screen: "FYP.AllMatchedIntrest",
+                    title: "Your Perfect Match",
+                    label: "Match",
+                    icon: sources[0],
+                    navigatorButtons: {
+                        leftButtons: [
+                            {
+                                icon: sources[2],
+                                title: "Menu",
+                                id: "sideDrawerToggle"
+                            }
+                        ]
+                    }
                 }
             ],
             tabsStyle: {
                 tabBarSelectedButtonColor: "orange",
                 initialTabIndex:0,
             },
-            
+            drawer: {
+                left: {
+                    screen: "awesome-places.SideDrawer"
+                }
+            },
             appStyle: {
                 tabBarSelectedButtonColor: "orange"
             },
             passProps:{
                 places:props,
                 receivedRequest:receivedRequestUserDetail,
-                authUserKey:authUserKey
+                authUserKey:authUserKey,
+                allYourMatched:allYourMatched
             }
         });
     });

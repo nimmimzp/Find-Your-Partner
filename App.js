@@ -10,6 +10,8 @@ import StateScreen from './src/screens/StateScreen/StateScreen';
 import ReligionScreen from './src/screens/ReligionScreen/ReligionScreen';
 import ReceiveRequestScreen from './src/screens/Interests/ReciviedInvitations';
 import SendInterestScreen from './src/screens/Interests/SendInterests';
+import AllMatchedIntrest from './src/screens/Interests/AllMatchedIntrest';
+import AllMatchedDetailscreen from './src/screens/Interests/AllMatchedDetailscreen';
 import SharePlaceScreen from './src/screens/SharePlace/SharePlace';
 import FindPlaceScreen  from './src/screens/FindPlace/FindPlace';
 import PlaceDetailScreen from "./src/screens/PlaceDetail/PlaceDetail";
@@ -17,7 +19,7 @@ import SideDrawer from "./src/screens/SideDrawer/SideDrawer";
 import configureStore from "./src/store/configureStore";
 
 const store = configureStore();
-
+console.disableYellowBox = true;
 // Register Screens
 
 Navigation.registerComponent(
@@ -114,6 +116,27 @@ Navigation.registerComponent(
     Provider
 );
 
+Navigation.registerComponent(
+    "FYP.AllMatchedIntrest",
+    () => AllMatchedIntrest,
+    store,
+    Provider
+);
+
+Navigation.registerComponent(
+    "FYP.AllMatchedIntrest",
+    () => AllMatchedIntrest,
+    store,
+    Provider
+);
+
+
+Navigation.registerComponent(
+    "FYP.AllMatchedDetailscreen",
+    () => AllMatchedDetailscreen,
+    store,
+    Provider
+);
 // Start a App
 Navigation.startSingleScreenApp({
 	screen: {

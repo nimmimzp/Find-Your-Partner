@@ -11,5 +11,6 @@ export {
     cancelIntrestRequest,
     allRequestUserReceive,
     cancelReceivedRequest,
-    acceptUserRequest
+    acceptUserRequest,
+    getBackToUserProfile
 } from "./user";
