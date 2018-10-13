@@ -23,7 +23,7 @@ class FindPlaceScreen extends Component {
 
   constructor(props) {
     super(props);
-    console.log(props.places)
+    
     console.ignoredYellowBox = ['Setting a timer' ];
     this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
   }

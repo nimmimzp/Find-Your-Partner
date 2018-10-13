@@ -3,6 +3,7 @@ import {
   View,
   Text,
   Button,
+  Image,
   TextInput,
   StyleSheet,
   ImageBackground,
@@ -19,7 +20,8 @@ import DefaultInput from "../../components/UI/DefaultInput/DefaultInput";
 import HeadingText from "../../components/UI/HeadingText/HeadingText";
 import MainText from "../../components/UI/MainText/MainText";
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
-import backgroundImage from "../../assets/background.jpg";
+import backgroundImage from "../../assets/bgImage.png";
+import logoImage from "../../assets/logo.png";
 import validate from "../../utility/validation";
 import { tryAuth, authAutoSignedIn } from "../../store/actions/index";
 
@@ -66,16 +68,7 @@ class AuthScreen extends Component {
   }
 
   componentDidMount(){
-    Navigation.startSingleScreenApp({
-      screen: {
-          screen: "FYP.UploadProfile",
-          title: "Upload A Profile Picture"
-      },
-      passProps:{
-          userId:'ZMKY7eV0Smb9mggspOhuFZY5EjY2',
-      }
-  });
-  //this.props.onAutoSingin();
+    this.props.onAutoSingin();
   }
 
   switchAuthModeHandler = () => {
@@ -151,7 +144,7 @@ class AuthScreen extends Component {
     let headingText = null;
     let confirmPasswordControl = null;
     let submitButton = <ButtonWithBackground
-    color="#29aaf4"
+    color="#dea732"
     onPress={this.authHandler}
     disabled={
       !this.state.controls.confirmPassword.valid && this.state.authMode === "signup" ||
@@ -196,14 +189,18 @@ class AuthScreen extends Component {
     return (
       <ImageBackground source={backgroundImage} style={styles.backgroundImage}>
         <KeyboardAvoidingView style={styles.container} behavior="padding">
-          {headingText}
-          <ButtonWithBackground
+        <View style={styles.logoContainer}>
+              {/* {headingText} */}
+              <Image style={styles.logo} source={logoImage} />
+            </View>
+          {/* <ButtonWithBackground
             color="#29aaf4"
             onPress={this.switchAuthModeHandler}
           >
             Switch to {this.state.authMode === "login" ? "Sign Up" : "Login"}
-          </ButtonWithBackground>
-          <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+          </ButtonWithBackground> */}
+          <View style={styles.formContainer}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
             <View style={styles.inputContainer}>
               <DefaultInput
                 placeholder="Your E-Mail Address"
@@ -246,7 +243,15 @@ class AuthScreen extends Component {
               </View>
             </View>
           </TouchableWithoutFeedback>
-          {submitButton}
+            {submitButton}
+            <Text
+                color="#fff"
+                onPress={this.switchAuthModeHandler}
+                style={styles.loginButton}
+              >
+                 {this.state.authMode === "login" ? "Don't have an account ? Sign Up" : "Already have an account? Login"}
+            </Text>
+          </View>
         </KeyboardAvoidingView>
       </ImageBackground>
     );
@@ -256,19 +261,35 @@ class AuthScreen extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center"
+    //justifyContent: "center",
+    //salignItems: "center"
   },
   backgroundImage: {
     width: "100%",
-    flex: 1
+    flex: 1,
+    height: "100%",
+  },
+  logoContainer: {
+    alignItems:"center",
+    flexGrow: 1,
+    justifyContent:"center"
+  },
+  logo: {
+   width: "70%"
+  },
+  formContainer: {
+    width: "100%",
+    padding: 20,
   },
   inputContainer: {
-    width: "80%"
+    width: "100%"
   },
   input: {
-    backgroundColor: "#eee",
-    borderColor: "#bbb"
+    backgroundColor: "#fff",
+    borderColor: "#9d1117",
+    color:"#600307",
+    borderRadius:4,
+    paddingLeft: 15,
   },
   landscapePasswordContainer: {
     flexDirection: "row",
@@ -283,6 +304,23 @@ const styles = StyleSheet.create({
   },
   portraitPasswordWrapper: {
     width: "100%"
+  },
+  loginButton:{
+    paddingTop:10,
+    paddingBottom:10,
+    borderRadius:10,
+    borderWidth: 1,
+    color:"#dea732",
+    fontSize: 18,
+    fontWeight: "600",
+    borderWidth: 0 ,
+    textAlign: 'center'
+  },
+  submitButton:{
+    textAlign: 'center', 
+    fontWeight: 'bold',
+    fontSize: 18,
+    color:"#600307"
   }
 });
 

@@ -4,16 +4,19 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 const startTabs = (props) => {
     Promise.all([
-        Icon.getImageSource(Platform.OS === 'android' ? "md-people" : "ios-people", 30),
-        Icon.getImageSource(Platform.OS === 'android' ? "md-contact" : "ios-contact", 30),
-        Icon.getImageSource(Platform.OS === 'android' ? "md-menu" : "ios-menu", 30)
+        Icon.getImageSource(Platform.OS === 'android' ? "md-people" : "ios-people", 30,"#000"),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-person" : "ios-person", 30,"#000"),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-menu" : "ios-menu", 30,"#000"),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-map" : "ios-map", 30,"#000"),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-heart-half" : "ios-heart-half", 30,"#000"),
+        Icon.getImageSource(Platform.OS === 'android' ? "md-flag" : "ios-flag", 30,"#000")
     ]).then(sources => {
         Navigation.startTabBasedApp({
             tabs: [
                 
                 {
                     screen: "FYP.ProfileScreen",
-                    label: "User Profile",
+                    label: "Profile",
                     title: "User Profile",
                     icon: sources[1],
                     navigatorButtons: {
@@ -28,9 +31,9 @@ const startTabs = (props) => {
                 },
                 {
                     screen: "FYP.StateScreen",
-                    label: "Your Howntown",
+                    label: "Howntown",
                     title: "Hometown",
-                    icon: sources[0],
+                    icon: sources[3],
                     navigatorButtons: {
                         leftButtons: [
                             {
@@ -43,9 +46,9 @@ const startTabs = (props) => {
                 },
                 {
                     screen: "FYP.ReligionScreen",
-                    label: "About Your Religion",
+                    label: "Religion",
                     title: "Religion",
-                    icon: sources[0],
+                    icon: sources[5],
                     navigatorButtons: {
                         leftButtons: [
                             {
@@ -58,9 +61,9 @@ const startTabs = (props) => {
                 },
                 {
                     screen: "awesome-places.FindPlaceScreen",
-                    label: "All Users",
-                    title: "All Users",
-                    icon: sources[0],
+                    label: "Matches",
+                    title: "Matches",
+                    icon: sources[4],
                     navigatorButtons: {
                         leftButtons: [
                             {
@@ -73,7 +76,8 @@ const startTabs = (props) => {
                 }
             ],
             tabsStyle: {
-                tabBarSelectedButtonColor: "orange",
+                tabBarSelectedButtonColor: '#fff',
+                tabBarBackgroundColor: '#fff',
                 initialTabIndex:0,
             },
             drawer: {
@@ -82,7 +86,11 @@ const startTabs = (props) => {
                 }
             },
             appStyle: {
-                tabBarSelectedButtonColor: "orange"
+                tabBarSelectedButtonColor: "#dea732",
+                tabBarBackgroundColor: '#900612',
+                tabBarButtonColor: '#ffffff',
+                tabFontSize:14,
+                selectedTabFontSize:18,
             },
             passProps:{
                 userData:props
@@ -150,7 +158,7 @@ export const friendsTabs = (props,receivedRequestUserDetail,allYourMatched,authU
                 }
             ],
             tabsStyle: {
-                tabBarSelectedButtonColor: "orange",
+                tabBarSelectedButtonColor: "#dea732",
                 initialTabIndex:0,
             },
             drawer: {
@@ -159,7 +167,7 @@ export const friendsTabs = (props,receivedRequestUserDetail,allYourMatched,authU
                 }
             },
             appStyle: {
-                tabBarSelectedButtonColor: "orange"
+                tabBarSelectedButtonColor: "#dea732"
             },
             passProps:{
                 places:props,

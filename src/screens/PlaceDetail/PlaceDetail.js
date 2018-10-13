@@ -22,7 +22,7 @@ class PlaceDetail extends Component {
 
 	constructor(props) {
 		super(props);
-		console.log(props)
+		
 		console.ignoredYellowBox = ['Setting a timer' ];
 		Dimensions.addEventListener("change", this.updateStyles);
 	}

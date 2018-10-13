@@ -11,6 +11,7 @@ class ReceiveRequestScreen extends Component {
 		super(props);
         console.ignoredYellowBox = ['Setting a timer' ];
         this.props.navigator.setOnNavigatorEvent(this.onNavigatorEvent);
+       
     }
 
     onNavigatorEvent = event => {
@@ -47,9 +48,7 @@ class ReceiveRequestScreen extends Component {
         this.props.acceptUserRequest(receivedByDetail,loggedinUser);
     }
     render () {
-        if(this.props.allYourMatched.length == 0){
-            return <Text> No Request get yet</Text>
-        }
+       
         return <PlaceList
         places={this.props.receivedRequest}
         onItemSelected={this.userSelectedHandler}

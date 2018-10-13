@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import {
-   ScrollView
+   ScrollView,
+   StyleSheet
 } from "react-native";
 
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
@@ -76,7 +77,7 @@ class SecondScreen extends Component{
     }
     render(){
         return(
-            <ScrollView>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
                 <DefaultInput 
                     value={this.state.controls.state.value} 
                     placeholder="State" 
@@ -93,10 +94,17 @@ class SecondScreen extends Component{
                     onChangeText={val => this.updateInputState("pincode", val)}
                     keyboardType="numeric"
                 />
-                <ButtonWithBackground color="#29aaf4" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
+                 <ButtonWithBackground color="#dea732" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
             </ScrollView>
         )
     }
 }
+const styles = StyleSheet.create({
+    contentContainer: {
+        padding:20,
+        backgroundColor:"#fff",
+        textAlign:'left'
+     },
+});
 
 export default SecondScreen;

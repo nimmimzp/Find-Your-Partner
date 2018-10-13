@@ -4,6 +4,7 @@ import {
     Picker,
     DatePickerAndroid,
     Text,
+    StyleSheet,
     Platform,
     ActivityIndicator,
     TouchableOpacity,
@@ -43,12 +44,15 @@ class ProfileScreen extends Component{
             {
                 label:"Female",
                 value:1,
-                selected:(this.props.userData[0].gender)?true:false
+                selected:(this.props.userData[0].gender)?true:false,
+                color:'#b3110e',
+                labelStyle:{fontSize: 20, color: '#2ecc71'}
             },
             {
                 label:"Male",
 				value:0,
-				selected:(this.props.userData[0].gender)?false:true
+                selected:(this.props.userData[0].gender)?false:true,
+                color:'#b3110e',
             }
         ],
         controls:{
@@ -171,13 +175,13 @@ class ProfileScreen extends Component{
         let selectedButton = this.state.gender.find(e => e.selected == true);
         
         
-        let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
+        let submitButton = <ButtonWithBackground color="#dea732" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
         
         return(
-			<ScrollView>
+			<ScrollView contentContainerStyle={styles.contentContainer}>
             
             <DefaultInput 
                 value={this.state.controls.firstName.value} 
@@ -195,18 +199,27 @@ class ProfileScreen extends Component{
                 keyboardType="numeric"
                 onChangeText={val => this.updateInputState("phonenumber", val)}
             />
-            <View >
-                <RadioGroup radioButtons={this.state.gender} onPress={this.selectRadionButtonHandler} />
+            <View style={styles.radioButtonstyle}>
+                <RadioGroup radioButtons={this.state.gender} onPress={this.selectRadionButtonHandler} flexDirection='row' color='#fff'/>
             </View>
-            <DefaultInput value={this.state.controls.birthday.value} editable = {false} />
-            <TouchableOpacity onPress={()=>this.openAndroidDatePicker()}>
-                <Icon size={30} name={Platform.OS === "android" ? "md-calendar" : "ios-calendar"} color="orange"/>
-            </TouchableOpacity>
-            <View>
-                <Text>Height</Text>
-                <Picker
+            <View style={styles.datepickerBox}>
+                <View style={{flex:1,alignItems:'center'}}>
+                    <TouchableOpacity onPress={()=>this.openAndroidDatePicker()}>
+                        <Icon size={30} name={Platform.OS === "android" ? "md-calendar" : "ios-calendar"} color="orange"/>
+                    </TouchableOpacity>
+                </View>
+                <View style={{flex:4,justifyContent: 'flex-start',alignItems:'flex-start'}}>
+                  <DefaultInput value={this.state.controls.birthday.value} editable = {false} />
+                </View>
+            </View>
+            <View style={styles.selectpickerBox}>
+                <View style={{flex:5}}>
+                  <Text style={styles.slectPickerText}>Height</Text>
+                </View>
+                <View style={{flex:5,justifyContent: 'flex-end',alignItems:'flex-end'}}>
+                  <Picker
                     selectedValue={this.state.controls.height.value}
-                    style={{ height: 50, width: 100 }}
+                    style={{width: 90,height:35 }}
                     onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
                         return {
                             controls:{
@@ -252,34 +265,42 @@ class ProfileScreen extends Component{
                     <Picker.Item label="6.6" value="6.6" />
                     <Picker.Item label="> 6.6" value="> 6.6" />
                 </Picker>
+                </View>
             </View>
 
-            <View>
-                <Text>Married Status</Text>
-                <Picker
-                    selectedValue={this.state.controls.marriedStatus.value}
-                    style={{ height: 50, width: 100 }}
-                    onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
-                        return {
-                            controls:{
-                                ...prevState.controls,
-                                marriedStatus:{
-                                    value:itemValue
+            <View style={styles.selectpickerBox}>
+                <View style={{flex:3}}>
+                   <Text>Married Status</Text>
+                </View>
+                <View style={{flex:3,justifyContent: 'flex-end',alignItems:'flex-end'}}>
+                    <Picker
+                        selectedValue={this.state.controls.marriedStatus.value}
+                        style={{width: 180,height:35 }}
+                        onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
+                            return {
+                                controls:{
+                                    ...prevState.controls,
+                                    marriedStatus:{
+                                        value:itemValue
+                                    }
                                 }
                             }
-                        }
-                        
-                        })}>
-                    <Picker.Item label="Never Married" value="0" />
-                    <Picker.Item label="Divorced" value="1" />
-                </Picker>
+                            
+                            })}>
+                        <Picker.Item label="Never Married" value="0" />
+                        <Picker.Item label="Divorced" value="1" />
+                    </Picker>
+                </View>
             </View>
 
-            <View>
-                <Text>Highest Education</Text>
+            <View style={styles.selectpickerBox}>
+               <View style={{flex:3}}>
+                  <Text>Highest Education</Text>
+                </View>
+                <View style={{flex:4,justifyContent: 'flex-end',alignItems:'flex-end'}}>
                 <Picker
                     selectedValue={this.state.controls.education.value}
-                    style={{ height: 50, width: 100 }}
+                    style={{width: 180,height:35 }}
                     onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
                         return {
                             controls:{
@@ -295,6 +316,7 @@ class ProfileScreen extends Component{
                     <Picker.Item label="Gradute" value="Gradute" />
                     <Picker.Item label="Post Gradute" value="Post Graduate" />
                 </Picker>
+                </View>
             </View>
             
             {/* z */}
@@ -303,7 +325,51 @@ class ProfileScreen extends Component{
         );
     }
 }
-
+const styles = StyleSheet.create({
+    contentContainer: {
+       padding:20,
+       backgroundColor:"#fff",
+       textAlign:'left'
+    },
+    selectpickerBox:{
+        flexDirection: 'row', 
+        alignItems: 'center',
+        backgroundColor:'#fff', 
+        width: "100%",
+		borderWidth: 2,
+		borderLeftWidth: 0,
+		borderTopWidth: 0,
+		borderRightWidth:0,
+		borderColor: "#b3110e",
+		padding: 5,
+		marginTop: 8,
+		marginBottom: 8,
+		borderRadius: 4,
+        paddingHorizontal:10,
+        color:'#000',
+        fontWeight:'bold',
+    },
+    datepickerBox:{
+        flexDirection: 'row', 
+        alignItems: 'center',
+    },
+    slectPickerText:{
+        fontWeight:'bold',
+        fontSize:16,
+        color:'#000',
+    },
+    radioButtonstyle:{
+        margin:10,
+        textAlign:'left',
+        color:'#fff'
+    },
+    submitButton:{
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 18,
+        color:"#600307"
+    }
+});
 // const styles = StyleSheet.create({
 //     MainContainer:{
 //       flex: 1,

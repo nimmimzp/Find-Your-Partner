@@ -40,9 +40,7 @@ class AllMatchedIntrest extends Component {
         this.props.cancelUserRequest(requestedToDetail,loggedinUser)
     }
     render () {
-        if(this.props.allYourMatched.length == 0){
-            return <Text> No match yet</Text>
-        }
+        
         return <PlaceList
         places={this.props.allYourMatched}
         onItemSelected={this.userSelectedHandler}

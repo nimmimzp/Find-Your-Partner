@@ -3,6 +3,7 @@ import {
     ScrollView,
     View,
     Picker,
+    StyleSheet,
     Text,ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
@@ -80,17 +81,20 @@ class ReligionScreen extends Component{
         this.props.updateUserInfo(userUpdatedData);
     }
     render() {
-        let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.updateUserInfo} >Update</ButtonWithBackground>
+        let submitButton = <ButtonWithBackground color="#dea732" onPress={this.updateUserInfo} >Update</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
         return(
-            <ScrollView>
-                <View>
-                    <Text>Religion</Text>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <View style={styles.selectpickerBox}>
+                   <View style={{flex:2}}>
+                      <Text style={styles.slectPickerText}>Religion</Text>
+                    </View>
+                    <View style={{flex:3,justifyContent: 'flex-end',alignItems:'flex-end'}}>
                     <Picker
                         selectedValue={this.state.controls.religion.value}
-                        style={{ height: 50, width: 100 }}
+                        style={{width:130,height:35 }}
                         onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
                             return {
                                 controls:{
@@ -108,6 +112,7 @@ class ReligionScreen extends Component{
                         <Picker.Item label="Christian" value="Christian" />
                         <Picker.Item label="Jain" value="Jain" />
                     </Picker>
+                    </View>
                 </View>
                  <DefaultInput 
                     value={this.state.controls.caste.value} 
@@ -126,6 +131,42 @@ class ReligionScreen extends Component{
     
     }
 }
+const styles = StyleSheet.create({
+    contentContainer: {
+        padding:20,
+        backgroundColor:"#fff",
+        textAlign:'left'
+     },
+     selectpickerBox:{
+         flexDirection: 'row', 
+         alignItems: 'center',
+         backgroundColor:'#fff', 
+         width: "100%",
+         borderWidth: 2,
+         borderLeftWidth: 0,
+         borderTopWidth: 0,
+         borderRightWidth:0,
+         borderColor: "#b3110e",
+         padding: 5,
+         marginTop: 8,
+         marginBottom: 8,
+         borderRadius: 4,
+         paddingHorizontal:10,
+         color:'#000',
+         fontWeight:'bold',
+     },
+     slectPickerText:{
+        fontWeight:'bold',
+        fontSize:16,
+        color:'#000',
+    },
+    submitButton:{
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 18,
+        color:"#600307"
+    }
+});
 const mapStateToProps = state => {
 	
 	return {

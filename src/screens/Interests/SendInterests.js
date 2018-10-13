@@ -25,7 +25,7 @@ class SendInterestScreen extends Component {
         const selPlace = this.props.places.find(place => {
             return place.key === key;
         });
-        console.log(this.props.authUserKey)
+       
         this.props.navigator.push({
             screen: "awesome-places.PlaceDetailScreen",
             title: selPlace.firstName+' '+selPlace.lastName,
@@ -42,9 +42,7 @@ class SendInterestScreen extends Component {
         this.props.cancelUserRequest(requestedToDetail,loggedinUser)
     }
     render () {
-        if(this.props.allYourMatched.length == 0){
-            return <Text> No Request send yet</Text>
-        }
+        
         return <PlaceList
         places={this.props.places}
         onItemSelected={this.userSelectedHandler}

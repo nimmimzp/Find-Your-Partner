@@ -31,7 +31,7 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
                     })
                     .then(token => {
                         authToken = token
-                        return fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeUserImage",{
+                        fetch("https://us-central1-react-native-1536905661123.cloudfunctions.net/storeImage",{
                             method:"POST",
                             body:JSON.stringify({
                                 image:image.base64
@@ -40,52 +40,61 @@ export const addPlace = (firstName,image,lastName,birthday,phonenumber) => {
                                 "Authorization": "Bearer " + token
                             }
                         })
-                    })
-                    .then(parsedRes => {
-                       
-                        imageUrl = parsedRes.url;
-                        let userDetail = userRef.orderByChild("userId").equalTo(authUserId);
-                        userDetail.on('value',(snap) =>{
-                            let userData = [];
-                            snap.forEach((child) => {
-                                userData.push({
-                                    firstName: child.val().firstName,
-                                    lastName: child.val().lastName,
-                                    image:{
-                                        uri:child.val().image
-                                    },
-                                    key: child.key
-                                })
-                            })
-                            const userUpdatedData = {
-                                firstName:firstName,
-                                lastName:lastName,
-                                birthday:birthday,
-                                phonenumber:phonenumber,
-                                userId: authUserId,
-                                image: imageUrl
-                            };
-                           
-                            if(userData.length === 0){
-                                
-                                return fetch("https://react-native-1536905661123.firebaseio.com/users.json?auth=" + authToken,{
-                                    method:"POST",
-                                    body:JSON.stringify(userUpdatedData)
-                                })
-                            }else{
-                                return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
-                               
-                            }
+                        .catch(err => {
+                            console.log(err);
+                            alert("Something went wrong, please try again!");
+                            dispatch(uiStopLoading());
+                        })
+                        .then(res => res.json())
+                        .then(imageRes => {
+                            console.log(imageRes)
                         })
                     })
-                    .then(parsedRes => {
-                        dispatch(uiStopLoading());
-                        console.log(parsedRes);
-                    })
-                    .catch(err => {
-                        dispatch(uiStopLoading());
-                        console.warn(err);
-                    });
+                    // .then(parsedRes => {
+                    //     //console.log(parsedRes)
+                    //     imageUrl = parsedRes.url;
+                    //     let userDetail = userRef.orderByChild("userId").equalTo(authUserId);
+                    //     userDetail.on('value',(snap) =>{
+                    //         let userData = [];
+                    //         snap.forEach((child) => {
+                    //             userData.push({
+                    //                 firstName: child.val().firstName,
+                    //                 lastName: child.val().lastName,
+                    //                 image:{
+                    //                     uri:child.val().image
+                    //                 },
+                    //                 key: child.key
+                    //             })
+                    //         })
+                    //         const userUpdatedData = {
+                    //             firstName:firstName,
+                    //             lastName:lastName,
+                    //             birthday:birthday,
+                    //             phonenumber:phonenumber,
+                    //             userId: authUserId,
+                    //             image: imageUrl
+                    //         };
+                           
+                    //         if(userData.length === 0){
+                                
+                    //             return fetch("https://react-native-1536905661123.firebaseio.com/users.json?auth=" + authToken,{
+                    //                 method:"POST",
+                    //                 body:JSON.stringify(userUpdatedData)
+                    //             })
+                    //         }else{
+                    //             return firebase.database().ref('users/' + userData[0].key).update(userUpdatedData);
+                               
+                    //         }
+                    //     })
+                    // })
+                    // .then(parsedRes1 => {
+                    //     dispatch(uiStopLoading());
+                    //     console.log(parsedRes1);
+                    // })
+                    // .catch(err => {
+                    //     dispatch(uiStopLoading());
+                    //     console.warn(err);
+                    // });
                 })
                 .catch(err => {
                     dispatch(uiStopLoading());
@@ -125,7 +134,7 @@ export const getPlaces = (filter) => {
                             }
                         })
                     })
-                    console.log(userData)
+                   
                     let userSendRequest = userRef.child(loggedInUserKey).child('requestedUserData');
                     userSendRequest.on('value',(sendRequestSnap) =>{
                         sendRequestSnap.forEach((sendRequestChild)=>{

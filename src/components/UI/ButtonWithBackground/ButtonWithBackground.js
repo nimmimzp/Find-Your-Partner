@@ -17,7 +17,7 @@ const buttonWithBackground = props => {
         props.disabled ? styles.disabled : null
       ]}
     >
-      <Text style={props.disabled ? styles.disabledText : null}>
+      <Text style={props.disabled ? styles.disabledText : styles.enabledText}>
         {props.children}
       </Text>
     </View>
@@ -39,16 +39,30 @@ const styles = StyleSheet.create({
   button: {
     padding: 10,
     margin: 5,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "black"
+    borderRadius: 50,
+    borderWidth:0,
+    borderColor: "black",
+    color: "#dea732",
+    textAlign: 'center', 
+    fontWeight: 'bold',
+    fontSize: 20,
   },
   disabled: {
-    backgroundColor: "#eee",
-    borderColor: "#aaa"
+    backgroundColor: "#dea732",
+    borderColor: "#fff"
   },
   disabledText: {
-    color: "#aaa"
+    textAlign: 'center', 
+    fontWeight: 'bold',
+    fontSize: 18,
+    color:"#600307"
+  },
+  enabledText:{
+    fontWeight: 'bold',
+    textAlign:'center',
+    color:"#600307",
+    fontSize: 20,
+    padding: 0,
   }
 });
 

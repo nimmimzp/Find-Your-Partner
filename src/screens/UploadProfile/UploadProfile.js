@@ -3,7 +3,7 @@ import {View,StyleSheet,ActivityIndicator} from 'react-native';
 import PickImage from '../../components/PickImage/PickImage';
 import { connect } from "react-redux";
 
-import {updateProfile} from '../../store/actions/index';
+import {updateProfile,addPlace} from '../../store/actions/index';
 import ButtonWithBackground from "../../components/UI/ButtonWithBackground/ButtonWithBackground";
 class UploadProfile extends Component {
     constructor(props) {
@@ -34,19 +34,26 @@ class UploadProfile extends Component {
     
     addUserProfile = () => {
         this.props.onAddUserProfileImage(
+            
+            
             this.state.controls.image.value,
+            
             this.props.userId
         )
     }
     render (){
-        let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.addUserProfile} >Save</ButtonWithBackground>
+        let submitButton = <ButtonWithBackground color="#dea732" onPress={this.addUserProfile} >Save</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
         return (
             <View style={styles.container}>
-                <PickImage onImagePicked={this.imagePickHandler}/>
-                {submitButton}
+                <View style={styles.pickImageBox}>
+                   <PickImage onImagePicked={this.imagePickHandler}/>
+                </View>
+                <View style={styles.saveBtn}> 
+                   {submitButton} 
+                </View>
             </View>
         )
     }
@@ -60,7 +67,8 @@ const mapStateToProps = state => {
 };
 const mapDispatchToProps = dispatch => {
 	return {
-		onAddUserProfileImage: (image,userId) => dispatch(updateProfile(image,userId)),
+        onAddUserProfileImage: (image,userId) => dispatch(updateProfile(image,userId)),
+        //onAddUserProfileImage: (first,image,last,birth,userId) => dispatch(addPlace(first,image,last,birth,userId))
 		//onLoginUser: () => dispatch(getUserLoginData())
 	};
 };
@@ -70,6 +78,14 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		alignItems: "center"
+    },
+    pickImageBox:{
+        alignItems:"center",
+        flexGrow: 1,
+        justifyContent:"center",
+    },
+    saveBtn:{
+        width:"100%"
     },
     previewImage: {
 		width: "100%",

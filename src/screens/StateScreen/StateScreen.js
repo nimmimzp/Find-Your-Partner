@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import {
-    ActivityIndicator,ScrollView
+    ActivityIndicator,ScrollView,StyleSheet
 } from "react-native";
 import DefaultInput from '../../components/UI/DefaultInput/DefaultInput';
 import validate from '../../utility/validation';
@@ -83,12 +83,12 @@ class StateScreen extends Component{
         this.props.updateUserInfo(userUpdatedData);
     }
     render() {
-        let submitButton =  <ButtonWithBackground color="#29aaf4" onPress={this.updateUserInfo} >Update</ButtonWithBackground>
+        let submitButton =  <ButtonWithBackground color="#dea732" onPress={this.updateUserInfo} >Update</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
         return(
-            <ScrollView>
+            <ScrollView contentContainerStyle={styles.contentContainer}>
                 <DefaultInput 
                     value={this.state.controls.state.value} 
                     placeholder="State" 
@@ -110,6 +110,19 @@ class StateScreen extends Component{
         )
     }
 }
+const styles = StyleSheet.create({
+    contentContainer: {
+       padding:20,
+       backgroundColor:"#fff",
+       textAlign:'left'
+    },
+    submitButton:{
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 18,
+        color:"#600307"
+    },
+});
 const mapStateToProps = state => {
 	
 	return {

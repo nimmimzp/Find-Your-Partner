@@ -3,6 +3,7 @@ import {
     ScrollView,
     View,
     Picker,
+    StyleSheet,
     Text,ActivityIndicator
 } from "react-native";
 import { connect } from "react-redux";
@@ -68,34 +69,38 @@ class ThirdScreen extends Component{
         this.props.onAddUserInfo(this.props.userData,this.props.userStateData,aboutReligion);
     }
     render(){
-        let submitButton = <ButtonWithBackground color="#29aaf4" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
+        let submitButton = <ButtonWithBackground color="#dea732" onPress={this.addBasicInfoOfUser} >Next</ButtonWithBackground>
         if(this.props.isLoading){
             submitButton = <ActivityIndicator size="large" color="orange" />
         }
         return(
-            <ScrollView>
-                <View>
-                    <Text>Religion</Text>
-                    <Picker
-                        selectedValue={this.state.controls.religion.value}
-                        style={{ height: 50, width: 100 }}
-                        onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
-                            return {
-                                controls:{
-                                    ...prevState.controls,
-                                    religion:{
-                                        value:itemValue
+            <ScrollView contentContainerStyle={styles.contentContainer}>
+                <View style={styles.selectpickerBox}>
+                   <View style={{flex:2}}>
+                     <Text>Religion</Text>
+                    </View>
+                    <View style={{flex:3,justifyContent: 'flex-end',alignItems:'flex-end'}}>
+                        <Picker
+                            selectedValue={this.state.controls.religion.value}
+                            style={{width:130,height:35 }}
+                            onValueChange={(itemValue, itemIndex) => this.setState(prevState=> {
+                                return {
+                                    controls:{
+                                        ...prevState.controls,
+                                        religion:{
+                                            value:itemValue
+                                        }
                                     }
                                 }
-                            }
-                            
-                            })}>
-                        <Picker.Item label="Hindu" value="Hindu" />
-                        <Picker.Item label="Muslim" value="Muslim" />
-                        <Picker.Item label="Sikh" value="Sikh" />
-                        <Picker.Item label="Christian" value="Christian" />
-                        <Picker.Item label="Jain" value="Jain" />
-                    </Picker>
+                                
+                                })}>
+                            <Picker.Item label="Hindu" value="Hindu" />
+                            <Picker.Item label="Muslim" value="Muslim" />
+                            <Picker.Item label="Sikh" value="Sikh" />
+                            <Picker.Item label="Christian" value="Christian" />
+                            <Picker.Item label="Jain" value="Jain" />
+                        </Picker>
+                    </View>
                 </View>
                  <DefaultInput 
                     value={this.state.controls.caste.value} 
@@ -108,12 +113,46 @@ class ThirdScreen extends Component{
                     onChangeText={val => this.updateInputState("motherTounge", val)}
                 />
                 {submitButton}
-                
             </ScrollView>
         )
     }
 }
-
+const styles = StyleSheet.create({
+    contentContainer: {
+        padding:20,
+        backgroundColor:"#fff",
+        textAlign:'left'
+     },
+     selectpickerBox:{
+         flexDirection: 'row', 
+         alignItems: 'center',
+         backgroundColor:'#fff', 
+         width: "100%",
+         borderWidth: 2,
+         borderLeftWidth: 0,
+         borderTopWidth: 0,
+         borderRightWidth:0,
+         borderColor: "#b3110e",
+         padding: 5,
+         marginTop: 8,
+         marginBottom: 8,
+         borderRadius: 4,
+         paddingHorizontal:10,
+         color:'#000',
+         fontWeight:'bold',
+     },
+     slectPickerText:{
+        fontWeight:'bold',
+        fontSize:16,
+        color:'#000',
+    },
+    submitButton:{
+        textAlign: 'center', 
+        fontWeight: 'bold',
+        fontSize: 18,
+        color:"#600307"
+    }
+});
 const mapStateToProps = state => {
 	
 	return {
